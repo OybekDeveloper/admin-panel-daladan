@@ -1,0 +1,34 @@
+.login-page {
+  .login-input {
+    border-radius: 8px;
+    border: 1px solid var(--Gray-300, #d0d5dd);
+    background: var(--Base-White, #fff);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+    &:focus {
+      outline: 1px solid var(--Blue-300, #84caff);
+      background: var(--Base-White, #fff);
+      box-shadow: 0px 0px 0px 4px rgba(21, 112, 239, 0.24),
+        0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    }
+  }
+
+  .login-btn {
+    display: flex;
+    padding: 10px 16px;
+    color: var(--Base-White, #fff);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 1px solid var(--Blue-500, #2e90fa);
+    background: var(--Blue-500, #2e90fa);
+
+    /* Shadows/shadow-xs */
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  }
+}
