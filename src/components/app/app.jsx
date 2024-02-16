@@ -6,6 +6,7 @@ import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout }
 import './app.scss'
 import axios from 'axios'
 import Admin from '../admin/admin'
+import { ApiServices } from '../../services/api.get'
 const links = [
     {
         id: 1,
@@ -54,17 +55,8 @@ const App = () => {
                 if (!token) {
                     return navigate('/login');
                 }
-
-                const response = await axios({
-                    method: 'get',
-                    url: 'https://avtowatt.uz/api/v1/admin/',
-                    headers: {
-                        "Content-Type": "application/json",
-                        accept: '*/*',
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setAdminData(response.data);
+                const response = await ApiServices.getData("admin/");
+                setAdminData(response);
             } catch (err) {
                 console.error(err);
             }
@@ -73,7 +65,7 @@ const App = () => {
         fetchData();
     }, [navigate]);
     const { pathname } = useLocation();
-
+    console.log(adminData);
     const handleLogOut = () => {
         localStorage.removeItem('token')
         navigate('/login')
@@ -101,8 +93,8 @@ const App = () => {
                         <section className='flex justify-center items-center gap-[12px]'>
                             <img className='w-[40px] h-[40px] rounded-full' src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D' alt="img" />
                             <article className='flex flex-col justify-center'>
-                                <h1 className='text-[#344054] text-[14px] font-[600]'>Olivia Rhye</h1>
-                                <p className='font-[400] text-[14px]'>Admin</p>
+                                <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData.fullName}</h1>
+                                <p className='font-[400] text-[14px]'>{adminData.role}</p>
                             </article>
                         </section>
                         <div onClick={handleLogOut} className='logout-img flex justify-center items-center hover:bg-[#F9FAFB] rounded-[12px]'>
