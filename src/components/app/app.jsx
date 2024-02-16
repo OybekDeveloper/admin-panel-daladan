@@ -6,6 +6,7 @@ import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout }
 import './app.scss'
 import Admin from '../admin/admin'
 import { ApiServices } from '../../services/api.get'
+import Category from '../category/category'
 const links = [
     {
         id: 1,
@@ -106,6 +107,7 @@ const App = () => {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/admin' element={<Admin />} />
+                    <Route path='/category' element={<Category />} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </div>

@@ -1,7 +1,8 @@
 import axios from "axios";
+const token = localStorage.getItem("token");
 
 export const ApiServices = {
-  async getData(url,token) {
+  async getData(url) {
     const response = await axios({
       method: "get",
       url: `https://avtowatt.uz/api/v1/${url}`,
@@ -13,7 +14,7 @@ export const ApiServices = {
     return response.data;
   },
 
-  async postData(url, body,token) {
+  async postData(url, body) {
     const response = await axios({
       method: "post",
       url: `https://avtowatt.uz/api/v1/${url}`,

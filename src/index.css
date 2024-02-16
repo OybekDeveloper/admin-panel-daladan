@@ -13,5 +13,5 @@ body {
 }
 
 .blur-effect {
-  filter: blur(8px);
+  filter: blur(4px);
 }
