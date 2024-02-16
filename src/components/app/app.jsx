@@ -83,9 +83,9 @@ const App = () => {
                     </div>
                     <header className='w-full px-[16px] flex flex-col gap-[4px]'>
                         {links.map(item => (
-                            <div onClick={() => navigate(item.url)} key={item.id} className={`${pathname === item.url && "active "} hover:bg-[#F9FAFB] flex items-centerpx-[12px] py-[8px] px-[12px] gap-[12px] cursor-pointer`}>
-                                <img src={item.icon} alt={item.name} />
-                                <h1 className='text-[16px] font-[600]'>{item.name}</h1>
+                            <div onClick={() => navigate(item?.url)} key={item?.id} className={`${pathname === item.url && "active "} hover:bg-[#F9FAFB] flex items-centerpx-[12px] py-[8px] px-[12px] gap-[12px] cursor-pointer`}>
+                                <img src={item?.icon} alt={item?.name} />
+                                <h1 className='text-[16px] font-[600]'>{item?.name}</h1>
                             </div>
                         ))}
                     </header>
@@ -93,8 +93,8 @@ const App = () => {
                         <section className='flex justify-center items-center gap-[12px]'>
                             <img className='w-[40px] h-[40px] rounded-full' src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D' alt="img" />
                             <article className='flex flex-col justify-center'>
-                                <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData.fullName}</h1>
-                                <p className='font-[400] text-[14px]'>{adminData.role}</p>
+                                <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData?.fullName}</h1>
+                                <p className='font-[400] text-[14px]'>{adminData?.role}</p>
                             </article>
                         </section>
                         <div onClick={handleLogOut} className='logout-img flex justify-center items-center hover:bg-[#F9FAFB] rounded-[12px]'>
