@@ -66,7 +66,7 @@ const Login = () => {
                     {errorMessage && <h1 className='bg-red-200 rounded-[12px] p-[10px]'>{errorMessage}</h1>}
 
                     <div className='flex flex-col items-start gap-[6px]'>
-                        <labe l className='text-[14px] font-[500]' htmlFor='text'>Telefon raqam</labe>
+                        <label className='text-[14px] font-[500]' htmlFor='text'>Telefon raqam</label>
                         <input
                             className='w-full flex px-[14px] py-[10px] login-input'
                             type='text'

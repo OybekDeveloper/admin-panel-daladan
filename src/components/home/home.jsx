@@ -4,7 +4,7 @@ import './home.scss'
 import Monitoring from './monitoring'
 const Home = () => {
   return (
-    <div className='home px-[24px] py-[32px]'>
+    <div className='home px-[24px] py-[32px] w-full'>
       <section className='flex justify-between items-center'>
         <h1 className='text-[24px] font-[500]'>Monitoring</h1>
         <div className='flex justify-center items-center gap-[16px]'>

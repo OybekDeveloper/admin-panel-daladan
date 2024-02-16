@@ -4,7 +4,6 @@ import Login from '../login/login'
 import Home from '../home/home'
 import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
 import './app.scss'
-import axios from 'axios'
 import Admin from '../admin/admin'
 import { ApiServices } from '../../services/api.get'
 const links = [
@@ -47,7 +46,9 @@ const links = [
 ]
 const App = () => {
     const navigate = useNavigate();
-    const [adminData, setAdminData] = useState()
+    const [adminData, setAdminData] = useState();
+    const { pathname } = useLocation();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -55,7 +56,7 @@ const App = () => {
                 if (!token) {
                     return navigate('/login');
                 }
-                const response = await ApiServices.getData("admin/");
+                const response = await ApiServices.getData("admin/", token);
                 setAdminData(response);
             } catch (err) {
                 console.error(err);
@@ -63,17 +64,15 @@ const App = () => {
         };
 
         fetchData();
-    }, [navigate]);
-    const { pathname } = useLocation();
-    console.log(adminData);
+    }, [pathname]);
     const handleLogOut = () => {
         localStorage.removeItem('token')
         navigate('/login')
     }
     return (
-        <div className='flex app  h-screen'>
+        <div className={`flex app ${!(pathname === '/login') && "max-w-[1440px]"} h-screen  mx-auto relative  justify-end`}>
             {!(pathname === '/login') && (
-                <div className='w-[20%] sadebar relative'>
+                <div className='w-[20%] sadebar fixed  h-screen left-0 top-0'>
                     <div className="flex flex-row py-[32px] justify-start pl-[28px] items-center gap-1">
                         <img className='w-[38px]' src={logo3} alt="logo" />
                         <div className="flex flex-col items-start">
@@ -103,7 +102,7 @@ const App = () => {
                     </footer>
                 </div>
             )}
-            <div className={`${pathname === '/login' ? "w-full" : "w-[80%]"}`}>
+            <div className={`${pathname === '/login' ? "w-full" : "w-[80%] "}`}>
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='/admin' element={<Admin />} />
