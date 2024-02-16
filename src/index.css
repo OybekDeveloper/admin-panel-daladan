@@ -11,3 +11,7 @@
 body {
   font-family: "Inter";
 }
+
+.blur-effect {
+  filter: blur(8px);
+}

@@ -1,0 +1,42 @@
+.admin {
+  .admin-list {
+    border-radius: 12px;
+    border: 1px solid var(--Gray-200, #eaecf0);
+    background: var(--Base-White, #fff);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  }
+  .add-admin {
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--Gray-300, #d0d5dd);
+    background: var(--Base-White, #fff);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    &:hover {
+      border: 1px solid var(--Gray-300, #d0d5dd);
+      background: var(--Base-White, #fff);
+      box-shadow: 0px 0px 0px 4px rgba(152, 162, 179, 0.14),
+        0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    }
+  }
+  .admin-modal {
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    background: var(--Base-White, #fff);
+    box-shadow: 0px 8px 8px -4px rgba(16, 24, 40, 0.03),
+      0px 20px 24px -4px rgba(16, 24, 40, 0.08);
+    .login-input {
+      border-radius: 8px;
+      border: 1px solid var(--Gray-300, #d0d5dd);
+      background: var(--Base-White, #fff);
+      box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+      &:focus {
+        outline: 1px solid var(--Blue-300, #84caff);
+        background: var(--Base-White, #fff);
+        box-shadow: 0px 0px 0px 4px rgba(21, 112, 239, 0.24),
+          0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { calendar } from './img'
 import './home.scss'
+import Monitoring from './monitoring'
 const Home = () => {
   return (
     <div className='home px-[24px] py-[32px]'>
@@ -17,6 +18,7 @@ const Home = () => {
         </div>
       </section>
       <div className='h-[1px] bg-[#EAECF0] my-[15px]'></div>
+      <Monitoring />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import Home from '../home/home'
 import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
 import './app.scss'
 import axios from 'axios'
+import Admin from '../admin/admin'
 const links = [
     {
         id: 1,
@@ -78,7 +79,7 @@ const App = () => {
         navigate('/login')
     }
     return (
-        <div className='flex app max-w-[1440px  ] h-screen'>
+        <div className='flex app  h-screen'>
             {!(pathname === '/login') && (
                 <div className='w-[20%] sadebar relative'>
                     <div className="flex flex-row py-[32px] justify-start pl-[28px] items-center gap-1">
@@ -113,6 +114,7 @@ const App = () => {
             <div className={`${pathname === '/login' ? "w-full" : "w-[80%]"}`}>
                 <Routes>
                     <Route path='/' element={<Home />} />
+                    <Route path='/admin' element={<Admin />} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </div>
