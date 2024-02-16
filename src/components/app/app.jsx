@@ -3,10 +3,10 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Login from '../login/login'
 import Home from '../home/home'
 import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
-import './app.scss'
 import Admin from '../admin/admin'
 import { ApiServices } from '../../services/api.get'
 import Category from '../category/category'
+import './app.scss'
 const links = [
     {
         id: 1,
@@ -65,7 +65,7 @@ const App = () => {
         };
 
         fetchData();
-    }, [pathname]);
+    }, [pathname,navigate]);
     const handleLogOut = () => {
         localStorage.removeItem('token')
         navigate('/login')
