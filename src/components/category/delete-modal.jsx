@@ -3,9 +3,10 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CategoryDeleteModal } from '../../reducer/events'
 import { close, line, trashIcon } from './category-img'
+import { ApiServices } from '../../services/api.get'
 const DeleteModal = () => {
 
-    const { categoryDel } = useSelector(state => state.events)
+    const { categoryDel, deleteCategoryId } = useSelector(state => state.events)
     const dispatch = useDispatch()
     const handleClose = () => {
         dispatch(CategoryDeleteModal())
@@ -18,6 +19,17 @@ const DeleteModal = () => {
             body.classList.remove("blur-effect");
         }
     }, [categoryDel]);
+    const handleDelete = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await ApiServices.delData(`category/${deleteCategoryId}`, token);
+            dispatch(CategoryDeleteModal())
+
+            console.log(res)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <div>
             <Transition show={categoryDel} as={Fragment}>
@@ -55,7 +67,7 @@ const DeleteModal = () => {
                                     <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>“Dehqonchilik” kategoriyasini o’chirishni xohlaysizmi?</p>
                                     <div className='w-full flex justify-around items-center gap-[12px] pt-[32px]'>
                                         <button onClick={handleClose} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] border-[#D0D5DD] bg-[#fff] px-[16px] py-[10px]'>Bekor qilish</button>
-                                        <button className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] bg-[#D92D20] px-[16px] py-[10px] text-[#fff]'>O’chirish</button>
+                                        <button onClick={handleDelete} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] bg-[#D92D20] px-[16px] py-[10px] text-[#fff]'>O’chirish</button>
                                     </div>
                                 </div>
                             </Dialog.Panel>

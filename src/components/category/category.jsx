@@ -6,13 +6,14 @@ import { addadmin } from '../admin/img';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { edit, trash } from './category-img';
 import DeleteModal from './delete-modal';
-import { useDispatch } from 'react-redux';
-import { CategoryDeleteModal, CategoryEditModal } from '../../reducer/events';
+import { useDispatch, useSelector } from 'react-redux';
+import { CategoryCreateModal, CategoryDeleteModal, CategoryEditModal } from '../../reducer/events';
 import EditModal from './edit-modal';
+import CreateModal from './create-modal';
 const Category = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const {categoryDel}=useSelector(state=>state.events)
+    const { categoryDel, categoryEdit } = useSelector(state => state.events)
     const { pathname } = useLocation()
     const [category, setCategory] = useState([]);
     useEffect(() => {
@@ -26,12 +27,15 @@ const Category = () => {
             }
         }
         fetchData();
-    }, [])
-    const categoryDelete = () => {
-        dispatch(CategoryDeleteModal())
+    }, [categoryEdit, categoryDel])
+    const handleCategoryDelete = (id) => {
+        dispatch(CategoryDeleteModal(id))
     }
-    const categoryEdit = () => {
-        dispatch(CategoryEditModal());
+    const handleCategoryEdit = (id) => {
+        dispatch(CategoryEditModal(id));
+    };
+    const handleCategoryCreate = () => {
+        dispatch(CategoryCreateModal())
     }
     return (
         <div className='category px-[24px] py-[32px] w-full'>
@@ -45,6 +49,7 @@ const Category = () => {
                     </li>
                 </ul>
                 <div
+                    onClick={handleCategoryCreate}
                     className="add-category flex justify-center items-center gap-[6px] px-[14px] py-[10px]"
                 >
                     <img src={addadmin} alt="addadmin" />
@@ -90,8 +95,8 @@ const Category = () => {
                                 </td>
                                 <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                     <div className='flex px-[16px] justify-center items-center'>
-                                        <img onClick={categoryDelete} className='p-[10px]' src={trash} alt="trash" />
-                                        <img onClick={categoryEdit} className='p-[10px]' src={edit} alt="edit" />
+                                        <img onClick={() => handleCategoryDelete(item?.id)} className='p-[10px]' src={trash} alt="trash" />
+                                        <img onClick={() => handleCategoryEdit(item?.id)} className='p-[10px]' src={edit} alt="trash" />
                                     </div>
 
                                 </td>
@@ -103,8 +108,9 @@ const Category = () => {
                     <Pagination />
                 </div>
             </section>
-            <DeleteModal />
             <EditModal />
+            <CreateModal />
+            <DeleteModal />
         </div>
     )
 }

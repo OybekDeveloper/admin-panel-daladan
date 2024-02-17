@@ -7,42 +7,43 @@ import Admin from '../admin/admin'
 import { ApiServices } from '../../services/api.get'
 import Category from '../category/category'
 import './app.scss'
+import Department from '../category/department'
 const links = [
     {
         id: 1,
         name: "Home",
         icon: home,
-        url: '/'
+        url: ['/']
     },
     {
         id: 2,
         name: "Admin",
         icon: admin,
-        url: '/admin'
+        url: ['/admin']
     },
     {
         id: 3,
         name: "Kategoriya",
         icon: category,
-        url: '/category'
+        url: ['/category', '/department']
     },
     {
         id: 4,
         name: "Yangiliklar",
         icon: news,
-        url: '/news'
+        url: ['/news']
     },
     {
         id: 5,
         name: "Banner",
         icon: banner,
-        url: '/banner'
+        url: ['/banner']
     },
     {
         id: 6,
         name: "FAQ",
         icon: faq,
-        url: '/faq'
+        url: ['/faq']
     },
 ]
 const App = () => {
@@ -65,7 +66,7 @@ const App = () => {
         };
 
         fetchData();
-    }, [pathname,navigate]);
+    }, [pathname, navigate]);
     const handleLogOut = () => {
         localStorage.removeItem('token')
         navigate('/login')
@@ -83,9 +84,13 @@ const App = () => {
                     </div>
                     <header className='w-full px-[16px] flex flex-col gap-[4px]'>
                         {links.map(item => (
-                            <div onClick={() => navigate(item?.url)} key={item?.id} className={`${pathname === item.url && "active "} hover:bg-[#F9FAFB] flex items-centerpx-[12px] py-[8px] px-[12px] gap-[12px] cursor-pointer`}>
-                                <img src={item?.icon} alt={item?.name} />
-                                <h1 className='text-[16px] font-[600]'>{item?.name}</h1>
+                            <div
+                                onClick={() => navigate(item.url[0])}  // Assuming you want to navigate to the first path in the array
+                                key={item.id}
+                                className={`${item.url.includes(pathname) && "active "} hover:bg-[#F9FAFB] flex items-center px-[12px] py-[8px] px-[12px] gap-[12px] cursor-pointer`}
+                            >
+                                <img src={item.icon} alt={item.name} />
+                                <h1 className='text-[16px] font-[600]'>{item.name}</h1>
                             </div>
                         ))}
                     </header>
@@ -108,6 +113,7 @@ const App = () => {
                     <Route path='/' element={<Home />} />
                     <Route path='/admin' element={<Admin />} />
                     <Route path='/category' element={<Category />} />
+                    <Route path='/department' element={<Department />} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </div>

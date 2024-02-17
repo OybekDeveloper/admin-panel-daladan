@@ -1,15 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoryEditModal } from "../../reducer/events";
+import { CategoryCreateModal, CategoryEditModal } from "../../reducer/events";
 import { close, upload } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { imageDb } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
-const EditModal = () => {
-    const { categoryEdit, editCategoryId } = useSelector((state) => state.events);
+
+const CreateModal = () => {
+    const { categoryCreate, createCategoryId } = useSelector((state) => state.events);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [showProgress, setShowProgress] = useState(false);
@@ -88,7 +89,7 @@ const EditModal = () => {
         }
     };
     const handleClose = () => {
-        dispatch(CategoryEditModal());
+        dispatch(CategoryCreateModal());
         setShowProgress(false);
         setUploadedFile(null);
     };
@@ -98,12 +99,12 @@ const EditModal = () => {
 
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (categoryEdit) {
+        if (categoryCreate) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
         }
-    }, [categoryEdit]);
+    }, [categoryCreate]);
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLoading) {
@@ -111,7 +112,7 @@ const EditModal = () => {
                 try {
                     const token = localStorage.getItem('token')
                     const response = await ApiServices.putData(
-                        `category/update/${editCategoryId}`,
+                        `category/update/${createCategoryId}`,
                         categoryEditData, token
                     );
                     setCategoryEditData([])
@@ -125,7 +126,7 @@ const EditModal = () => {
     };
     return (
         <div>
-            <Transition show={categoryEdit} as={Fragment}>
+            <Transition show={categoryCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}
@@ -153,7 +154,7 @@ const EditModal = () => {
                                 <div className="w-[400px] p-[24px]">
                                     <div className="flex justify-between items-center pb-[5px]">
                                         <h1 className="text-[18px] font-[600]">
-                                            Kategoriyani tahrirlash
+                                            Kategoriya qo'shish
                                         </h1>
                                         <img
                                             onClick={handleClose}
@@ -163,7 +164,7 @@ const EditModal = () => {
                                         />
                                     </div>
                                     <p className="text-[14px] font-[400] text-[#475467] pt-[4px]">
-                                        Kategoriya tahrirlash uchun quyidagi ma’lumotlarni
+                                        Kategoriya qo'shish uchun quyidagi ma’lumotlarni
                                         to’ldiring
                                     </p>
                                     <form className="w-[360px] flex flex-col gap-[16px] pt-[10px]">
@@ -287,4 +288,4 @@ const EditModal = () => {
     );
 };
 
-export default EditModal;
+export default CreateModal;

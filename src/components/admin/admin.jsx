@@ -163,13 +163,13 @@ const Admin = () => {
                                 key={item?.id}
                                 className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
                             >
-                                <td className="text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
+                                <td className="hover:bg-[#F9FAFB] cursor-pointer text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
                                     {item?.fullName}
                                 </td>
-                                <td className="text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                <td className="hover:bg-[#F9FAFB] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                     {item?.role}
                                 </td>
-                                <td className="text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                <td className="hover:bg-[#F9FAFB] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                     {item?.phone}
                                 </td>
                             </tr>
