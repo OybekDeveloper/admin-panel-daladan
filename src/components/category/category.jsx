@@ -1,38 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import Pagination from '../pagination/pagination'
 import { ApiServices } from '../../services/api.get';
-import './category.scss'
 import { addadmin } from '../admin/img';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { edit, trash } from './category-img';
 import DeleteModal from './delete-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { CategoryCreateModal, CategoryDeleteModal, CategoryEditModal } from '../../reducer/events';
+import { CategoryCreateModal, CategoryDeleteModal, CategoryEditModal, SelectCategory } from '../../reducer/events';
 import EditModal from './edit-modal';
 import CreateModal from './create-modal';
+import './category.scss'
+
 const Category = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { categoryDel, categoryEdit } = useSelector(state => state.events)
+    const { categoryDel, categoryEdit, categoryCreate } = useSelector(state => state.events)
     const { pathname } = useLocation()
     const [category, setCategory] = useState([]);
     useEffect(() => {
+        const body = document.querySelector(".app");
+        if (categoryCreate) {
+            body.classList.add("blur-effect");
+        } else {
+            body.classList.remove("blur-effect");
+        }
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token')
                 const response = await ApiServices.getData("category/all", token)
                 setCategory(response)
+                dispatch(SelectCategory(response))
             } catch (err) {
                 console.log(err)
             }
         }
         fetchData();
-    }, [categoryEdit, categoryDel])
+    }, [categoryEdit, categoryDel, categoryCreate])
     const handleCategoryDelete = (id) => {
         dispatch(CategoryDeleteModal(id))
     }
     const handleCategoryEdit = (id) => {
-        dispatch(CategoryEditModal(id));
+        dispatch(CategoryEditModal([id, category]));
     };
     const handleCategoryCreate = () => {
         dispatch(CategoryCreateModal())
@@ -79,7 +87,7 @@ const Category = () => {
                         </tr>
                     </thead>
                     <tbody className="w-full whitespace-nowrap overflow-y-auto">
-                        {category?.map((item, idx) => (
+                        {category?.slice().reverse().map((item, idx) => (
                             <tr
                                 key={item?.id}
                                 className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}

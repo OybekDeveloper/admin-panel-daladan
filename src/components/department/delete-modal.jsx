@@ -1,23 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CategoryDeleteModal } from '../../reducer/events'
-import { close, line, trashIcon } from './category-img'
+import { DepartmentDeleteModal } from '../../reducer/events'
+import { close, line, trashIcon } from './department-img'
 import { ApiServices } from '../../services/api.get'
 import { toast } from 'react-toastify'
 const DeleteModal = () => {
 
-    const { categoryDel, deleteCategoryId } = useSelector(state => state.events)
+    const { departmentDel, deleteDepartmentId } = useSelector(state => state.events)
     const dispatch = useDispatch()
     const handleClose = () => {
-        dispatch(CategoryDeleteModal())
+        dispatch(DepartmentDeleteModal())
     }
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token')
-            const res = await ApiServices.delData(`category/${deleteCategoryId}`, token);
-            dispatch(CategoryDeleteModal())
-            toast.error("Category successfully deleted!", {
+            const res = await ApiServices.delData(`sub-category/${deleteDepartmentId}`, token);
+            dispatch(DepartmentDeleteModal())
+            toast.error("Department successfully deleted!", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -34,7 +34,7 @@ const DeleteModal = () => {
     }
     return (
         <div>
-            <Transition show={categoryDel} as={Fragment}>
+            <Transition show={departmentDel} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}
@@ -65,7 +65,7 @@ const DeleteModal = () => {
                                         <img className=' p-[12px]' src={trashIcon} alt="trash icon" />
                                         <img onClick={handleClose} className='cursor-pointer p-[12px]' src={close} alt="close" />
                                     </div>
-                                    <h1 className='text-[18px] font-[600] pt-[16px]'>Kategoriyani o’chirish</h1>
+                                    <h1 className='text-[18px] font-[600] pt-[16px]'>Bo'limni o’chirish</h1>
                                     <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>“Dehqonchilik” kategoriyasini o’chirishni xohlaysizmi?</p>
                                     <div className='w-full flex justify-around items-center gap-[12px] pt-[32px]'>
                                         <button onClick={handleClose} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] border-[#D0D5DD] bg-[#fff] px-[16px] py-[10px]'>Bekor qilish</button>

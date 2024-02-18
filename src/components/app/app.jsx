@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { ApiServices } from '../../services/api.get'
+import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
 import Login from '../login/login'
 import Home from '../home/home'
-import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
-import Admin from '../admin/admin'
-import { ApiServices } from '../../services/api.get'
 import Category from '../category/category'
+import Department from '../department/department'
+import Admin from '../admin/admin'
 import './app.scss'
-import Department from '../category/department'
 const links = [
     {
         id: 1,

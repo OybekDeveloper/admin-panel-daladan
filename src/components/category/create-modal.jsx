@@ -1,21 +1,23 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoryCreateModal, CategoryEditModal } from "../../reducer/events";
+import { CategoryCreateModal } from "../../reducer/events";
 import { close, upload } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { imageDb } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const CreateModal = () => {
-    const { categoryCreate, createCategoryId } = useSelector((state) => state.events);
+    const { categoryCreate } = useSelector((state) => state.events);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [showProgress, setShowProgress] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [categoryEditData, setCategoryEditData] = useState([]);
+    const [errorMessagePost, setErrorMessagePost] = useState();
+    const [categoryCreateData, setCategoryCreatetData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const fileInputRef = useRef(null);
     const dispatch = useDispatch();
@@ -25,8 +27,8 @@ const CreateModal = () => {
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setCategoryEditData({
-            ...categoryEditData,
+        setCategoryCreatetData({
+            ...categoryCreateData,
             [name]: value,
         });
     };
@@ -39,7 +41,7 @@ const CreateModal = () => {
                 return getDownloadURL(imgRef);
             })
             .then((url) => {
-                setCategoryEditData({ ...categoryEditData, photoUrl: url })
+                setCategoryCreatetData({ ...categoryCreateData, photoUrl: url })
             })
             .catch((error) => {
                 console.error("Error getting download URL:", error);
@@ -92,33 +94,45 @@ const CreateModal = () => {
         dispatch(CategoryCreateModal());
         setShowProgress(false);
         setUploadedFile(null);
+        setErrorMessagePost(null)
+        setIsLoading(true)
+        setCategoryCreatetData(null)
+
     };
     useEffect(() => {
-        if (categoryEditData?.photoUrl) setIsLoading(false)
-    }, [categoryEditData])
+        if (categoryCreateData?.photoUrl) setIsLoading(false);
+    }, [categoryCreateData])
 
-    useEffect(() => {
-        const body = document.querySelector(".app");
-        if (categoryCreate) {
-            body.classList.add("blur-effect");
-        } else {
-            body.classList.remove("blur-effect");
-        }
-    }, [categoryCreate]);
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLoading) {
             const fetchData = async () => {
                 try {
                     const token = localStorage.getItem('token')
-                    const response = await ApiServices.putData(
-                        `category/update/${createCategoryId}`,
-                        categoryEditData, token
+                    await ApiServices.postData(
+                        `category`,
+                        categoryCreateData,
+                        token
                     );
-                    setCategoryEditData([])
-                    dispatch(CategoryEditModal());
+                    toast.success("Category successfully created!", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
+                    setCategoryCreatetData(null)
+                    setUploadedFile(null)
+                    setShowProgress(false)
+                    setIsLoading(true)
+                    setErrorMessagePost(null)
+                    dispatch(CategoryCreateModal());
                 } catch (err) {
                     console.log(err);
+                    setErrorMessagePost(err?.response?.data)
                 }
             };
             fetchData();
@@ -169,25 +183,45 @@ const CreateModal = () => {
                                     </p>
                                     <form className="w-[360px] flex flex-col gap-[16px] pt-[10px]">
                                         <div className="flex flex-col gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="text">
-                                                Kategoriya nomi (lotincha)
-                                            </label>
-                                            <input
-                                                className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
-                                                type="text"
-                                                name="nameK"
-                                                placeholder="Nomi"
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="text">
-                                                Kategoriya nomi (kirilcha)
+                                            <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
+                                                <h1> Kategoriya nomi (lotincha)</h1>
+                                                {errorMessagePost?.nameL && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                                                    >
+                                                        {errorMessagePost?.nameL}
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
                                                 name="nameL"
+                                                placeholder="Nomi"
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-[6px]">
+                                            <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
+                                                <h1>Kategoriya nomi (kirilcha)</h1>
+                                                {errorMessagePost?.nameK && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                                                    >
+                                                        {errorMessagePost?.nameK}
+                                                    </motion.h1>
+                                                )}
+                                            </label>
+                                            <input
+                                                className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
+                                                type="text"
+                                                name="nameK"
                                                 placeholder="Nomi"
                                                 onChange={handleChange}
                                             />

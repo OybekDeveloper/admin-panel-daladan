@@ -158,7 +158,7 @@ const Admin = () => {
                         </tr>
                     </thead>
                     <tbody className="w-full whitespace-nowrap overflow-y-auto">
-                        {allAdmin?.map((item, idx) => (
+                        {allAdmin?.slice().reverse().map((item, idx) => (
                             <tr
                                 key={item?.id}
                                 className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}

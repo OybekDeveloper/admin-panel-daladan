@@ -8,14 +8,15 @@ import { motion } from "framer-motion";
 import { imageDb } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
+import { toast } from "react-toastify";
 const EditModal = () => {
-    const { categoryEdit, editCategoryId } = useSelector((state) => state.events);
+    const { categoryEdit, editCategoryId, defaultEditCategory } = useSelector((state) => state.events);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [showProgress, setShowProgress] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
     const [categoryEditData, setCategoryEditData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
     const fileInputRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -38,7 +39,7 @@ const EditModal = () => {
                 return getDownloadURL(imgRef);
             })
             .then((url) => {
-                setCategoryEditData({ ...categoryEditData, photoUrl: url })
+                setCategoryEditData({ ...categoryEditData, photoUrl: url });
             })
             .catch((error) => {
                 console.error("Error getting download URL:", error);
@@ -61,28 +62,23 @@ const EditModal = () => {
             setShowProgress(true);
             const fetchData = async () => {
                 try {
-                    await axios.post(
-                        "",
-                        formData,
-                        {
-                            onUploadProgress: ({ loaded, total }) => {
-                                const newLoadingPercentage = Math.floor((loaded / total) * 100);
-                                setLoadingPercentage(newLoadingPercentage);
-                                if (total === loaded) {
-                                    const fileSize =
-                                        total < 1024 * 1024
-                                            ? `${(total / 1024).toFixed(2)} KB`
-                                            : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
+                    await axios.post("", formData, {
+                        onUploadProgress: ({ loaded, total }) => {
+                            const newLoadingPercentage = Math.floor((loaded / total) * 100);
+                            setLoadingPercentage(newLoadingPercentage);
+                            if (total === loaded) {
+                                const fileSize =
+                                    total < 1024 * 1024
+                                        ? `${(total / 1024).toFixed(2)} KB`
+                                        : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
 
-                                    setUploadedFile({ name: fileName, size: fileSize });
-                                }
-                            },
-                        }
-                    );
-                } catch (err) {
-                }
-            }
-            fetchData()
+                                setUploadedFile({ name: fileName, size: fileSize });
+                            }
+                        },
+                    });
+                } catch (err) { }
+            };
+            fetchData();
         } else {
             setErrorMessage("Upload only png and jpg images!");
         }
@@ -93,29 +89,50 @@ const EditModal = () => {
         setUploadedFile(null);
     };
     useEffect(() => {
-        if (categoryEditData?.photoUrl) setIsLoading(false)
-    }, [categoryEditData])
+        if (categoryEditData?.photoUrl) setIsLoading(false);
+    }, [categoryEditData]);
 
     useEffect(() => {
         const body = document.querySelector(".app");
         if (categoryEdit) {
             body.classList.add("blur-effect");
+
+            if (defaultEditCategory.length > 0) {
+                const { nameL, nameK } = defaultEditCategory[0];
+                setCategoryEditData({ nameL, nameK });
+            }
         } else {
             body.classList.remove("blur-effect");
         }
-    }, [categoryEdit]);
+    }, [categoryEdit, defaultEditCategory]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLoading) {
             const fetchData = async () => {
                 try {
-                    const token = localStorage.getItem('token')
-                    const response = await ApiServices.putData(
+                    const token = localStorage.getItem("token");
+                    await ApiServices.putData(
                         `category/update/${editCategoryId}`,
-                        categoryEditData, token
+                        categoryEditData,
+                        token
                     );
-                    setCategoryEditData([])
+                    toast.info("Category successfully uploaded!", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
+                    setCategoryEditData("");
+                    setIsLoading(true)
                     dispatch(CategoryEditModal());
+                    setShowProgress(false)
+                    setUploadedFile(null)
+
                 } catch (err) {
                     console.log(err);
                 }
@@ -174,7 +191,8 @@ const EditModal = () => {
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="nameK"
+                                                value={categoryEditData?.nameL}
+                                                name="nameL"
                                                 placeholder="Nomi"
                                                 onChange={handleChange}
                                             />
@@ -186,7 +204,8 @@ const EditModal = () => {
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="nameL"
+                                                name="nameK"
+                                                value={categoryEditData.nameK}
                                                 placeholder="Nomi"
                                                 onChange={handleChange}
                                             />
@@ -272,7 +291,8 @@ const EditModal = () => {
                                         <button
                                             type="submit"
                                             onClick={handleSubmit}
-                                            className={`${isLoading && "opacity-[0.5]"} w-full mt-[32px] bg-[#2E90FA] text-[#fff] text-[16px] font-[600] rounded-[8px] px-[16px] py-[10px] border-[1px] border-solid border-[#1570EF]`}
+                                            className={`${isLoading && "opacity-[0.5]"
+                                                } w-full mt-[32px] bg-[#2E90FA] text-[#fff] text-[16px] font-[600] rounded-[8px] px-[16px] py-[10px] border-[1px] border-solid border-[#1570EF]`}
                                         >
                                             Saqlash
                                         </button>
