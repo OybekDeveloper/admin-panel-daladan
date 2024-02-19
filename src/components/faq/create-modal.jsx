@@ -1,39 +1,39 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  NewsCreateModal } from "../../reducer/events";
+import { FaqCreateModal } from "../../reducer/events";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { close } from "../category/category-img";
 
 const CreateModal = () => {
-    const { newsCreate } = useSelector((state) => state.events);
+    const { faqCreate } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
-    const [newsCreateData, setNewsCreatetData] = useState({
-        "titleK": "",
-        "titleL": "",
-        "messageK": "",
-        "messageL": ""
+    const [faqCreateData, setFaqCreatetData] = useState({
+        "questionL": "",
+        "questionK": "",
+        "answerL": "",
+        "answerK": ""
     });
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setNewsCreatetData({
-            ...newsCreateData,
+        setFaqCreatetData({
+            ...faqCreateData,
             [name]: value,
-            titleK: 'null',
-            messageK: "null"
+            questionK: 'null',
+            answerK: "null"
         });
     };
     const handleClose = () => {
-        dispatch(NewsCreateModal());
-        setNewsCreatetData({
-            "titleK": "",
-            "titleL": "",
-            "messageK": "",
-            "messageL": ""
+        dispatch(FaqCreateModal());
+        setFaqCreatetData({
+            "questionL": "",
+            "questionK": "",
+            "answerL": "",
+            "answerK": ""
         })
         setErrorMessage(null)
     };
@@ -43,11 +43,11 @@ const CreateModal = () => {
             try {
                 const token = localStorage.getItem('token')
                 await ApiServices.postData(
-                    `news`,
-                    newsCreateData,
+                    `faq`,
+                    faqCreateData,
                     token
                 );
-                toast.success("News successfully created!", {
+                toast.success("FAQ successfully created!", {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -57,8 +57,8 @@ const CreateModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(NewsCreateModal())
-                setNewsCreatetData({
+                dispatch(FaqCreateModal())
+                setFaqCreatetData({
                     "titleK": "",
                     "titleL": "",
                     "messageK": "",
@@ -74,7 +74,7 @@ const CreateModal = () => {
     };
     return (
         <div>
-            <Transition show={newsCreate} as={Fragment}>
+            <Transition show={faqCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}
@@ -102,7 +102,7 @@ const CreateModal = () => {
                                 <div className="w-[400px] p-[24px]">
                                     <div className="flex justify-between items-center pb-[5px]">
                                         <h1 className="text-[18px] font-[600]">
-                                            Yangilik qo’shish
+                                            FAQ qo’shish
                                         </h1>
                                         <img
                                             onClick={handleClose}
@@ -112,13 +112,12 @@ const CreateModal = () => {
                                         />
                                     </div>
                                     <p className="text-[14px] font-[400] text-[#475467] pt-[4px]">
-                                        Yangilik qo’shish uchun quyidagi ma’lumotlarni to’ldiring
-                                    </p>
+                                        FAQ qo’shish uchun quyidagi ma’lumotlarni to’ldiring                                    </p>
                                     <form className="w-[360px] flex flex-col gap-[16px] pt-[10px]">
                                         <div className="flex flex-col gap-[6px]">
                                             <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
-                                                <h1>Yangilik nomi</h1>
-                                                {errorMessage?.titleL && (
+                                                <h1>Savol nomi</h1>
+                                                {errorMessage?.questionL && (
                                                     <motion.h1
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
@@ -132,15 +131,15 @@ const CreateModal = () => {
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="titleL"
+                                                name="questionL"
                                                 placeholder="Nomi"
                                                 onChange={handleChange}
                                             />
                                         </div>
                                         <div className="flex flex-col gap-[6px]">
                                             <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
-                                                <h1>Izoh</h1>
-                                                {errorMessage?.messageL && (
+                                                <h1>Savol javobi</h1>
+                                                {errorMessage?.answerL && (
                                                     <motion.h1
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
@@ -154,8 +153,8 @@ const CreateModal = () => {
                                             <textarea
                                                 className="w-full h-[150px] flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="messageL"
-                                                placeholder="Yangilik haqida izoh yozing..."
+                                                name="answerL"
+                                                placeholder="Savolning javobini kiriting..."
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -164,7 +163,7 @@ const CreateModal = () => {
                                             onClick={handleSubmit}
                                             className={`w-full mt-[32px] bg-[#2E90FA] text-[#fff] text-[16px] font-[600] rounded-[8px] px-[16px] py-[10px] border-[1px] border-solid border-[#1570EF]`}
                                         >
-                                            Saqlash
+                                            Qo’shish
                                         </button>
                                     </form>
                                 </div>

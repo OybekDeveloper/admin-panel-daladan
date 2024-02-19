@@ -1,34 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import './banner.scss'
-import { plus, trashb } from './banner-img'
-import { ApiServices } from '../../services/api.get'
-import { useDispatch, useSelector } from 'react-redux'
-import { BannerCreateModal, BannerDeleteModal } from '../../reducer/events'
-import CreateModal from './create-modal'
-import DeleteModal from './delete-modal'
+import React, { useEffect, useState } from 'react';
+import './banner.scss';
+import { plus, trashb } from './banner-img';
+import { ApiServices } from '../../services/api.get';
+import { useDispatch, useSelector } from 'react-redux';
+import { BannerCreateModal, BannerDeleteModal } from '../../reducer/events';
+import CreateModal from './create-modal';
+import DeleteModal from './delete-modal';
+
 const Banner = () => {
-    const { bannerCreate, bannerDel } = useSelector(state => state.events)
-    const dispatch = useDispatch()
+    const { bannerCreate, bannerDel } = useSelector(state => state.events);
+    const dispatch = useDispatch();
     const [banner, setBanner] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const handleCreateBanner = () => {
-        dispatch(BannerCreateModal())
-    }
+        dispatch(BannerCreateModal());
+    };
+
     const handleDeleteBanner = (id) => {
-        dispatch(BannerDeleteModal(id))
-    }
+        dispatch(BannerDeleteModal(id));
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token')
-                const response = await ApiServices.getData('banner/all', token)
-                setBanner(response)
+                const token = localStorage.getItem('token');
+                const response = await ApiServices.getData('banner/all', token);
+                setBanner(response);
             } catch (err) {
-                console.log(err)
+                console.error('Error fetching banner data:', err);
+            } finally {
+                setLoading(false);
             }
-        }
-        fetchData()
-    }, [bannerCreate, bannerDel])
-    console.log(banner)
+        };
+
+        fetchData();
+    }, [bannerCreate, bannerDel]);
+
     return (
         <div className="banner px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
@@ -39,24 +47,28 @@ const Banner = () => {
                 </div>
             </section>
             <div className="h-[1px] bg-[#EAECF0] my-[15px]"></div>
-            <section className='grid grid-cols-3 gap-[16px]'>
-                {banner.slice().reverse().map(item => (
-                    <div key={item?.id} className='banner-card flex flex-col justify-between'>
-                        <img className='object-cover h-[200px] rounded-t-[16px]' src={item?.imageUrl} alt="" />
-                        <div className='px-[20px] py-[24px] flex flex-col gap-[24px]'>
-                            <h1 className='whitespace-normal overflow-hidden text-[#475467] text-[16px] font-[400]'>{item?.url}</h1>
-                            <button onClick={() => handleDeleteBanner(item?.id)} className='w-full flex justify-center gap-[4px] items-center px-[12px] py-[8px] banner-btn'>
-                                <img className='w-[20px] h-[20px]' src={trashb} alt="trashb" />
-                                <h1 className='text-[14px] font-[600] text-[#fff]'>O’chirish</h1>
-                            </button>
+            <section className="grid grid-cols-3 gap-[16px]">
+                {loading ? (
+                    <h1>Loading...</h1>
+                ) : (
+                    banner.slice().reverse().map(item => (
+                        <div key={item?.id} className="banner-card flex flex-col justify-between">
+                            <img className="object-cover h-[200px] rounded-t-[16px]" src={item?.imageUrl} alt="" />
+                            <div className="px-[20px] py-[24px] flex flex-col gap-[24px]">
+                                <h1 className="whitespace-normal overflow-hidden text-[#475467] text-[16px] font-[400]">{item?.url}</h1>
+                                <button onClick={() => handleDeleteBanner(item?.id)} className="w-full flex justify-center gap-[4px] items-center px-[12px] py-[8px] banner-btn">
+                                    <img className="w-[20px] h-[20px]" src={trashb} alt="trashb" />
+                                    <h1 className="text-[14px] font-[600] text-[#fff]">O’chirish</h1>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </section>
             <CreateModal />
             <DeleteModal />
         </div>
-    )
-}
+    );
+};
 
-export default Banner
+export default Banner;

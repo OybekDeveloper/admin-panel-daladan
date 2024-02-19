@@ -19,12 +19,20 @@ export const initialState = {
   //news state
   openAllNews: false,
   selectNews: [],
-  selectNewsId:'',
+  selectNewsId: "",
   newsCreate: false,
   //banner state
   bannerCreate: false,
   bannerDel: false,
-  deleteBannerId:''
+  //faq state
+  openSelectFaq: false,
+  selectFaq: [],
+  faqCreate: false,
+  deleteFaqId: "",
+  faqDel: false,
+  faqEdit: false,
+  editFaqId: "",
+  defaultEdit:[]
 };
 export const eventsSlice = createSlice({
   name: "events",
@@ -81,7 +89,6 @@ export const eventsSlice = createSlice({
     ShowSelectNews: (state, action) => {
       state.openAllNews = !state.openAllNews;
        if (action.payload) {
-         state.selectNewsId = action?.payload[0];
          const filterData = action?.payload[1].filter(
            (item) => item?.id === action?.payload[0]
          );
@@ -95,6 +102,25 @@ export const eventsSlice = createSlice({
     BannerDeleteModal: (state, action) => {
       state.bannerDel = !state.bannerDel;
       state.deleteBannerId = action.payload;
+    },
+    //faqs modal
+    ShowSelectFaq: (state, action) => {
+     state.openSelectFaq = !state.openSelectFaq;
+       state.selectFaq = action.payload;
+    },
+    FaqCreateModal: (state, action) => {
+      state.faqCreate = !state.faqCreate;
+    },
+    FaqDeleteModal: (state, action) => {
+      state.faqDel = !state.faqDel;
+      state.deleteFaqId=action.payload
+    },
+    FaqEditModal: (state, action) => {
+      state.faqEdit = !state.faqEdit;
+      if (action.payload) {
+        state.editFaqId=action.payload[0]
+        state.defaultEdit=action.payload[1]
+      }
     }
   },
 });
@@ -111,5 +137,9 @@ export const {
   ShowSelectNews,
   BannerCreateModal,
   BannerDeleteModal,
+  ShowSelectFaq,
+  FaqCreateModal,
+  FaqDeleteModal,
+  FaqEditModal,
 } = eventsSlice.actions;
 export default eventsSlice.reducer;
