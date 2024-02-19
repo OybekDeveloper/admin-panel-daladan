@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryCreateModal, DepartmentCreateModal } from "../../reducer/events";
-import { close } from "./department-img";
+import { close } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -28,6 +28,7 @@ const CreateModal = () => {
         setDepartmentCreatetData(null)
         setIsActive(false);
         setSelectName(null);
+        setErrorMessage(null)
     };
     const handleActive = (id) => {
         setDepartmentCreatetData({ ...departmentCreateData, categoryId: id })
@@ -44,7 +45,7 @@ const CreateModal = () => {
                     departmentCreateData,
                     token
                 );
-                toast.success("Category successfully created!", {
+                toast.success("Sub-Category successfully created!", {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -109,6 +110,16 @@ const CreateModal = () => {
                                         Bo’lim qo’shish uchun quyidagi ma’lumotlarni to’ldiring
                                     </p>
                                     <form className="w-[360px] flex flex-col gap-[16px] pt-[10px]">
+                                        {errorMessage?.categoryId && (
+                                            <motion.h1
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ duration: 0.3 }}
+                                                className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                                            >
+                                                {errorMessage?.categoryId}
+                                            </motion.h1>
+                                        )}
                                         <button
                                             type="button"
                                             className="relative w-full flex justify-center items-center   px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"

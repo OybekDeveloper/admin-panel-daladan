@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { edit, trash } from "./department-img";
+import { useEffect, useState } from "react";
+import { edit, trash } from "./category-img";
 import { useLocation, useNavigate } from "react-router-dom";
-import Pagination from "../pagination/pagination";
 import { addadmin } from "../admin/img";
 import { ApiServices } from "../../services/api.get";
 import { useDispatch, useSelector } from "react-redux";
+import { DepartmentCreateModal, DepartmentDeleteModal, DepartmentEditModal, SelectCategory } from "../../reducer/events";
+import Pagination from "../pagination/pagination";
 import CreateModal from "./create-modal";
-import { DepartmentCreateModal, DepartmentDeleteModal, SelectCategory } from "../../reducer/events";
-import './department.scss'
 import DeleteModal from "./delete-modal";
+import EditModal from "./edit-modal";
+import './department.scss'
 const Department = () => {
-    const { departmentCreate, departmentDel } = useSelector(state => state.events)
-    const [department, setDepartMent] = useState();
+    const { departmentCreate, departmentDel, departmentEdit } = useSelector(state => state.events)
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const [department, setDepartMent] = useState();
     const dispatch = useDispatch()
     const handleDepartmentCreate = () => {
         dispatch(DepartmentCreateModal())
@@ -21,9 +22,22 @@ const Department = () => {
     const handleDepartmentDelete = (id) => {
         dispatch(DepartmentDeleteModal(id))
     }
-    const onChecked = () => {
-        return false
+    const handleDepartmentEdit = (id) => {
+        dispatch(DepartmentEditModal([id, department]))
     }
+    const handleStatusUpdate = async (id, status) => {
+        try {
+            const token = localStorage.getItem('token')
+            await ApiServices.putData(`sub-category/change-status`, {
+                id,
+                status: status === "ACTIVE" ? "NOT_ACTIVE" : "ACTIVE"
+            },
+                token)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    console.log(departmentEdit)
     useEffect(() => {
         const body = document.querySelector(".app");
         if (departmentCreate) {
@@ -41,7 +55,7 @@ const Department = () => {
             }
         }
         fetchData();
-    }, [departmentCreate, departmentDel])
+    }, [departmentCreate, departmentDel, departmentEdit])
     useEffect(() => {
         const token = localStorage.getItem("token");
         const fetchData = async () => {
@@ -56,7 +70,7 @@ const Department = () => {
             }
         };
         fetchData();
-    }, [departmentCreate, departmentDel]);
+    }, [departmentCreate, departmentDel, departmentEdit]);
     return (
         <div className="department px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
@@ -111,7 +125,7 @@ const Department = () => {
                                 className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
                             >
                                 <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                    {item?.name}
+                                    {item?.category?.name}
                                 </td>
                                 <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                     {item?.nameL}
@@ -123,9 +137,8 @@ const Department = () => {
                                     <label className="inline-flex items-center cursor-pointer">
                                         <input
                                             type="checkbox"
-                                            value=""
-                                            checked={item?.status === "ACTIVE"}
-                                            onChange={onChecked}
+                                            onChange={() => handleStatusUpdate(item?.id, item?.status)}
+                                            defaultChecked={item?.status === "ACTIVE"}
                                             className="sr-only peer" />
                                         <div className="relative w-[36px] h-[20px] bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[16px] after:w-[16px] after:transition-all  peer-checked:bg-[#53B1FD]"></div>
                                     </label>
@@ -139,10 +152,10 @@ const Department = () => {
                                             alt="trash"
                                         />
                                         <img
-                                            onClick={() => { }}
+                                            onClick={() => { handleDepartmentEdit(item?.id) }}
                                             className="p-[10px]"
                                             src={edit}
-                                            alt="trash"
+                                            alt="edit"
                                         />
                                     </div>
                                 </td>
@@ -154,6 +167,7 @@ const Department = () => {
                     <Pagination />
                 </div>
             </section>
+            <EditModal />
             <CreateModal />
             <DeleteModal />
         </div>

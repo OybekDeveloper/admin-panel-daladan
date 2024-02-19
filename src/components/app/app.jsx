@@ -8,6 +8,9 @@ import Category from '../category/category'
 import Department from '../department/department'
 import Admin from '../admin/admin'
 import './app.scss'
+import News from '../news/news'
+import Banner from '../banner/banner'
+import FAQ from '../faq/faq'
 const links = [
     {
         id: 1,
@@ -96,7 +99,6 @@ const App = () => {
                     </header>
                     <footer className='w-full absolute bottom-0 left-0 flex justify-between px-[16px] pb-[32px]'>
                         <section className='flex justify-center items-center gap-[12px]'>
-                            <img className='w-[40px] h-[40px] rounded-full' src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D' alt="img" />
                             <article className='flex flex-col justify-center'>
                                 <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData?.fullName}</h1>
                                 <p className='font-[400] text-[14px]'>{adminData?.role}</p>
@@ -114,6 +116,9 @@ const App = () => {
                     <Route path='/admin' element={<Admin />} />
                     <Route path='/category' element={<Category />} />
                     <Route path='/department' element={<Department />} />
+                    <Route path='/news' element={<News />} />
+                    <Route path='/banner' element={<Banner />} />
+                    <Route path='/faq' element={<FAQ />} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </div>

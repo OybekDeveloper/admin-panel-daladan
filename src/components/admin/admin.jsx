@@ -125,7 +125,6 @@ const Admin = () => {
         };
         fetchData();
     }, [isOpen, pathname]);
-    console.log(formData)
     return (
         <div className="admin px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
@@ -212,55 +211,19 @@ const Admin = () => {
                                             alt="icon"
                                         />
                                     </div>
-                                    {errorMessage?.data?.phone && (
-                                        <motion.h1
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="w-full bg-red-200 rounded-[12px] p-[5px] mt-[10px]">
-                                            {errorMessage?.data?.phone}
-                                        </motion.h1>
-                                    )}
-                                    {errorMessage?.data?.fullName && (
-                                        <motion.h1
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="w-full bg-red-200 rounded-[12px] p-[5px] mt-[10px]">
-                                            {errorMessage?.data?.fullName}
-                                        </motion.h1>
-                                    )}
-                                    {errorMessage?.data?.password && (
-                                        <motion.h1
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="w-full bg-red-200 rounded-[12px] p-[5px] mt-[10px]">
-                                            {errorMessage?.data?.password}
-                                        </motion.h1>
-                                    )}
-                                    {errorMessage?.status === 403 && (
-                                        <motion.h1
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="w-full bg-red-200 rounded-[12px] p-[5px] mt-[10px]">
-                                            You have not selected a role!
-                                        </motion.h1>
-                                    )}
-                                    {errorMessage?.data?.errorMessage && (
-                                        <motion.h1
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="w-full bg-red-200 rounded-[12px] p-[5px] mt-[10px]">
-                                            {errorMessage?.data?.errorMessage}
-                                        </motion.h1>
-                                    )}
                                     <form className="w-[360px] flex flex-col gap-[20px] pt-[10px]">
                                         <div className="flex flex-col gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="text">
-                                                Familiya, Ism*
+                                            <label className="flex items-center gap-2 text-[14px] font-[500]" htmlFor="text">
+                                                <h1>Familiya, Ism*</h1>
+                                                {errorMessage?.data?.fullName && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]">
+                                                        {errorMessage?.data?.fullName}
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
@@ -272,8 +235,17 @@ const Admin = () => {
                                             />
                                         </div>
                                         <div className="flex flex-col items-start gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="text">
-                                                Telefon raqam*
+                                            <label className="flex items-center gap-2 text-[14px] font-[500]" htmlFor="text">
+                                                <h1>Telefon raqam*</h1>
+                                                {errorMessage?.data?.phone && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]">
+                                                        {errorMessage?.data?.phone}
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
@@ -285,8 +257,17 @@ const Admin = () => {
                                             />
                                         </div>
                                         <div className="flex flex-col items-start gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="password">
-                                                Password*
+                                            <label className="flex items-center gap-2 text-[14px] font-[500]" htmlFor="text">
+                                                <h1>Password*</h1>
+                                                {errorMessage?.data?.password && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]">
+                                                        {errorMessage?.data?.password}
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
@@ -298,8 +279,17 @@ const Admin = () => {
                                             />
                                         </div>
                                         <div className="flex flex-col items-start gap-[6px]">
-                                            <label className="text-[14px] font-[500]" htmlFor="text">
-                                                Role*
+                                            <label className="flex gap-3 justify-center items-center text-[14px] font-[500]" htmlFor="text">
+                                                <h1>Role*</h1>
+                                                {errorMessage?.status === 403 && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]">
+                                                        You have not selected a role!
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <button
                                                 type="button"

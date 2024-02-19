@@ -1,23 +1,24 @@
+
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DepartmentDeleteModal } from '../../reducer/events'
-import { close, line, trashIcon } from './category-img'
+import { BannerDeleteModal } from '../../reducer/events'
 import { ApiServices } from '../../services/api.get'
 import { toast } from 'react-toastify'
+import { close, line, trashIcon } from '../category/category-img'
 const DeleteModal = () => {
 
-    const { departmentDel, deleteDepartmentId } = useSelector(state => state.events)
+    const { bannerDel, deleteBannerId } = useSelector(state => state.events)
     const dispatch = useDispatch()
     const handleClose = () => {
-        dispatch(DepartmentDeleteModal())
+        dispatch(BannerDeleteModal())
     }
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token')
-            await ApiServices.delData(`sub-category/${deleteDepartmentId}`, token);
-            dispatch(DepartmentDeleteModal())
-            toast.error("Sub-Category successfully deleted!", {
+            const res = await ApiServices.delData(`banner/${deleteBannerId}`, token);
+            dispatch(BannerDeleteModal())
+            toast.error("Category successfully deleted!", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -27,13 +28,14 @@ const DeleteModal = () => {
                 progress: undefined,
                 theme: "colored",
             });
+            console.log(res)
         } catch (err) {
             console.log(err)
         }
     }
     return (
         <div>
-            <Transition show={departmentDel} as={Fragment}>
+            <Transition show={bannerDel} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}
@@ -64,8 +66,8 @@ const DeleteModal = () => {
                                         <img className=' p-[12px]' src={trashIcon} alt="trash icon" />
                                         <img onClick={handleClose} className='cursor-pointer p-[12px]' src={close} alt="close" />
                                     </div>
-                                    <h1 className='text-[18px] font-[600] pt-[16px]'>Bo'limni o’chirish</h1>
-                                    <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>“Dehqonchilik” kategoriyasini o’chirishni xohlaysizmi?</p>
+                                    <h1 className='text-[18px] font-[600] pt-[16px]'>Bannerni o’chirish</h1>
+                                    <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>Ushbu bannerni o’chirishni xohlaysizmi?</p>
                                     <div className='w-full flex justify-around items-center gap-[12px] pt-[32px]'>
                                         <button onClick={handleClose} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] border-[#D0D5DD] bg-[#fff] px-[16px] py-[10px]'>Bekor qilish</button>
                                         <button onClick={handleDelete} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] bg-[#D92D20] px-[16px] py-[10px] text-[#fff]'>O’chirish</button>
