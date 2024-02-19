@@ -23,6 +23,12 @@ const Banner = () => {
     };
 
     useEffect(() => {
+        const body = document.querySelector(".app");
+        if (bannerCreate || bannerDel) {
+            body.classList.add("blur-effect");
+        } else {
+            body.classList.remove("blur-effect");
+        }
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem("token");

@@ -52,7 +52,7 @@ const Department = () => {
     console.log(departmentEdit);
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (departmentCreate) {
+        if (departmentCreate || departmentDel || departmentEdit) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
@@ -70,7 +70,7 @@ const Department = () => {
         };
         fetchData();
         //eslint-disable-next-line
-}, [departmentCreate, departmentDel, departmentEdit]);
+    }, [departmentCreate, departmentDel, departmentEdit]);
     useEffect(() => {
         const token = localStorage.getItem("token");
         const fetchData = async () => {

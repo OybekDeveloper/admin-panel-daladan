@@ -10,7 +10,7 @@ import SelectNews from "./select-news";
 import { plus } from "../banner/banner-img";
 import Loader from "../loader/loader";
 const News = () => {
-  const { newsCreate } = useSelector((state) => state.events);
+  const { newsCreate, openAllNews } = useSelector((state) => state.events);
   const dispatch = useDispatch();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,12 @@ const News = () => {
     dispatch(NewsCreateModal());
   };
   useEffect(() => {
+    const body = document.querySelector(".app");
+    if (newsCreate || openAllNews) {
+      body.classList.add("blur-effect");
+    } else {
+      body.classList.remove("blur-effect");
+    }
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -34,7 +40,7 @@ const News = () => {
       }
     };
     fetchData();
-  }, [newsCreate]);
+  }, [newsCreate, openAllNews]);
 
   return (
     <div className="news px-[24px] py-[32px] w-full">

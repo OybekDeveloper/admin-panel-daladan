@@ -11,7 +11,7 @@ import DeleteModal from "./delete-modal";
 import EditModal from "./edit-modal";
 import Loader from "../loader/loader";
 const FAQ = () => {
-  const { faqCreate, faqDel } = useSelector((state) => state.events);
+  const { faqCreate, faqDel, openSelectFaq } = useSelector((state) => state.events);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +21,12 @@ const FAQ = () => {
   };
 
   useEffect(() => {
+    const body = document.querySelector(".app");
+    if (faqCreate || faqDel || openSelectFaq) {
+      body.classList.add("blur-effect");
+    } else {
+      body.classList.remove("blur-effect");
+    }
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -34,7 +40,7 @@ const FAQ = () => {
       }
     };
     fetchData();
-  }, [faqCreate, faqDel]);
+  }, [faqCreate, faqDel, openSelectFaq]);
 
   return (
     <div className="faq px-[24px] py-[32px] w-full">

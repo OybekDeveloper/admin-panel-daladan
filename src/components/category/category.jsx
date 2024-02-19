@@ -28,7 +28,7 @@ const Category = () => {
     const [category, setCategory] = useState([]);
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (categoryCreate) {
+        if (categoryCreate || categoryDel || categoryEdit) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
