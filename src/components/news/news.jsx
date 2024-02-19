@@ -8,6 +8,7 @@ import { NewsCreateModal, ShowSelectNews } from "../../reducer/events";
 import CreateModal from "./create-modal";
 import SelectNews from "./select-news";
 import { plus } from "../banner/banner-img";
+import Loader from "../loader/loader";
 const News = () => {
   const { newsCreate } = useSelector((state) => state.events);
   const dispatch = useDispatch();
@@ -48,11 +49,11 @@ const News = () => {
         </div>
       </section>
       <div className="h-[1px] bg-[#EAECF0] my-[15px]"></div>
-      <section className="w-full grid grid-cols-3 gap-[16px]">
-        {loading ? (
-          <h1>Loading...</h1>
-        ) : (
-          news
+      {loading ? (
+        <Loader />
+      ) : (
+        <section className="w-full grid grid-cols-3 gap-[16px]">
+          {news
             ?.slice()
             .reverse()
             .map((item) => (
@@ -77,9 +78,9 @@ const News = () => {
                   Batafsil
                 </button>
               </div>
-            ))
-        )}
-      </section>
+            ))}
+        </section>
+      )}
       <CreateModal />
       <SelectNews />
     </div>

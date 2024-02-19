@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ApiServices } from '../../services/api.get'
-import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
+import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout, user_logo } from './img'
 import Login from '../login/login'
 import Home from '../home/home'
 import Category from '../category/category'
@@ -90,7 +90,7 @@ const App = () => {
                             <div
                                 onClick={() => navigate(item.url[0])}  // Assuming you want to navigate to the first path in the array
                                 key={item.id}
-                                className={`${item.url.includes(pathname) && "active "} hover:bg-[#F9FAFB] flex items-center px-[12px] py-[8px] px-[12px] gap-[12px] cursor-pointer`}
+                                className={`${item.url.includes(pathname) && "active "} hover:bg-[#F9FAFB] flex items-center px-[12px] py-[8px]  gap-[12px] cursor-pointer`}
                             >
                                 <img src={item.icon} alt={item.name} />
                                 <h1 className='text-[16px] font-[600]'>{item.name}</h1>
@@ -99,9 +99,11 @@ const App = () => {
                     </header>
                     <footer className='w-full absolute bottom-0 left-0 flex justify-between px-[16px] pb-[32px]'>
                         <section className='flex justify-center items-center gap-[12px]'>
+                            <img className='rounded-full w-[40px] h-[40px] object-cover' src={user_logo} alt="" />
                             <article className='flex flex-col justify-center'>
                                 <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData?.fullName}</h1>
                                 <p className='font-[400] text-[14px]'>{adminData?.role}</p>
+
                             </article>
                         </section>
                         <div onClick={handleLogOut} className='logout-img flex justify-center items-center hover:bg-[#F9FAFB] rounded-[12px]'>

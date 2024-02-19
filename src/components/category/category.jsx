@@ -15,6 +15,7 @@ import {
 import EditModal from "./edit-modal";
 import CreateModal from "./create-modal";
 import "./category.scss";
+import Loader from "../loader/loader";
 
 const Category = () => {
     const navigate = useNavigate();
@@ -87,70 +88,72 @@ const Category = () => {
                 <h1 className="text-[18px] font-[600] px-[24px] py-[20px]">
                     Kategoriyalar ro’yxati
                 </h1>
-                <table className="min-w-full">
-                    <thead>
-                        <tr className="border-t">
-                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                Rasmi
-                            </th>
-                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                Nomi(lotincha)
-                            </th>
-                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                Nomi(kirilcha)
-                            </th>
-                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start"></th>
-                        </tr>
-                    </thead>
-                    <tbody className="w-full whitespace-nowrap overflow-y-auto">
-                        {loading ? (
-                            <h1>Loading...</h1>
-                        ) : (
-                            category
-                                ?.slice()
-                                .reverse()
-                                .map((item, idx) => (
-                                    <tr
-                                        key={item?.id}
-                                        className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
-                                    >
-                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
-                                            <img
-                                                className="w-[40px] h-[40px]"
-                                                src={item?.photoUrl}
-                                                alt={item?.name}
-                                            />
-                                        </td>
-                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                            {item?.nameL}
-                                        </td>
-                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                            {item?.nameK}
-                                        </td>
-                                        <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                            <div className="flex px-[16px] justify-center items-center">
+                {loading ? (
+                    <Loader />
+                ) : (
+                    <>
+                        <table className="min-w-full">
+                            <thead>
+                                <tr className="border-t">
+                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                        Rasmi
+                                    </th>
+                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                        Nomi(lotincha)
+                                    </th>
+                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                        Nomi(kirilcha)
+                                    </th>
+                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start"></th>
+                                </tr>
+                            </thead>
+                            <tbody className="w-full whitespace-nowrap overflow-y-auto">
+                                {category
+                                    ?.slice()
+                                    .reverse()
+                                    .map((item, idx) => (
+                                        <tr
+                                            key={item?.id}
+                                            className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
+                                        >
+                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
                                                 <img
-                                                    onClick={() => handleCategoryDelete(item?.id)}
-                                                    className="p-[10px]"
-                                                    src={trash}
-                                                    alt="trash"
+                                                    className="w-[40px] h-[40px]"
+                                                    src={item?.photoUrl}
+                                                    alt={item?.name}
                                                 />
-                                                <img
-                                                    onClick={() => handleCategoryEdit(item?.id)}
-                                                    className="p-[10px]"
-                                                    src={edit}
-                                                    alt="trash"
-                                                />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                        )}
-                    </tbody>
-                </table>
-                <div className="px-[24px] py-[12px]">
-                    <Pagination />
-                </div>
+                                            </td>
+                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                                {item?.nameL}
+                                            </td>
+                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                                {item?.nameK}
+                                            </td>
+                                            <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                                <div className="flex px-[16px] justify-center items-center">
+                                                    <img
+                                                        onClick={() => handleCategoryDelete(item?.id)}
+                                                        className="p-[10px]"
+                                                        src={trash}
+                                                        alt="trash"
+                                                    />
+                                                    <img
+                                                        onClick={() => handleCategoryEdit(item?.id)}
+                                                        className="p-[10px]"
+                                                        src={edit}
+                                                        alt="trash"
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                        <div className="px-[24px] py-[12px]">
+                            <Pagination />
+                        </div>
+                    </>
+                )}
             </section>
             <EditModal />
             <CreateModal />
