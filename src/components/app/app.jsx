@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ApiServices } from '../../services/api.get'
-import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout, user_logo } from './img'
+import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
 import Login from '../login/login'
 import Home from '../home/home'
 import Category from '../category/category'
@@ -74,6 +74,12 @@ const App = () => {
         localStorage.removeItem('token')
         navigate('/login')
     }
+    const getInitials = (fullName) => {
+        if (!fullName) return '';
+        const words = fullName.split(' ');
+        const initials = words.map((word) => word[0]);
+        return initials.join('').toUpperCase();
+    };
     return (
         <div className={`flex app ${!(pathname === '/login') && "max-w-[1440px]"} h-screen  mx-auto relative  justify-end`}>
             {!(pathname === '/login') && (
@@ -99,7 +105,9 @@ const App = () => {
                     </header>
                     <footer className='w-full absolute bottom-0 left-0 flex justify-between px-[16px] pb-[32px]'>
                         <section className='flex justify-center items-center gap-[12px]'>
-                            <img className='rounded-full w-[40px] h-[40px] object-cover' src={user_logo} alt="" />
+                            <div className=' text-[16px] font-[600] flex items-center justify-center w-[40px] h-[40px] rounded-full border-[1px] border-solid border-[#dfe0e3] bg-[#f2f4f7]'>
+                                {getInitials(adminData?.fullName)}
+                            </div>
                             <article className='flex flex-col justify-center'>
                                 <h1 className='text-[#344054] text-[14px] font-[600]'>{adminData?.fullName}</h1>
                                 <p className='font-[400] text-[14px]'>{adminData?.role}</p>

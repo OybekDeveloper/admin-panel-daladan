@@ -69,7 +69,8 @@ const Department = () => {
             }
         };
         fetchData();
-    }, [departmentCreate, departmentDel, departmentEdit]);
+        //eslint-disable-next-line
+}, [departmentCreate, departmentDel, departmentEdit]);
     useEffect(() => {
         const token = localStorage.getItem("token");
         const fetchData = async () => {
@@ -90,7 +91,7 @@ const Department = () => {
     return (
         <div className="department px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
-                <ul className="flex department-links">
+                <ul className="flex department-links text-[14px] font-[600]">
                     <li
                         onClick={() => navigate("/category")}
                         className={`${pathname === "/category" && "bg-[#F9FAFB]"

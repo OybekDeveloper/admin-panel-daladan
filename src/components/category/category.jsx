@@ -46,6 +46,7 @@ const Category = () => {
             }
         };
         fetchData();
+        //eslint-disable-next-line
     }, [categoryEdit, categoryDel, categoryCreate]);
     const handleCategoryDelete = (id) => {
         dispatch(CategoryDeleteModal(id));
@@ -59,7 +60,7 @@ const Category = () => {
     return (
         <div className="category px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
-                <ul className="flex category-links">
+                <ul className="flex category-links text-[14px] font-[600]">
                     <li
                         onClick={() => navigate("/category")}
                         className={`${pathname === "/category" && "bg-[#F9FAFB]"

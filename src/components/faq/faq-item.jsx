@@ -17,8 +17,8 @@ const FaqItem = ({ faq }) => {
     const handleFaqDelete = (id) => {
         dispatch(FaqDeleteModal(id))
     }
-    const handleEditFaq = (id,item) => {
-        dispatch(FaqEditModal([id,item]))
+    const handleEditFaq = (id, item) => {
+        dispatch(FaqEditModal([id, item]))
     }
     const handleActive = () => {
         setIsActive(!isActive)
@@ -27,12 +27,12 @@ const FaqItem = ({ faq }) => {
         <div className='relative justify-start w-full faq-card flex flex-col items-start gap-[8px]'>
             <div className='w-full flex justify-between items-start  gap-[8px]'>
                 <h1 className='text-[18px] font-[500]'>{faq?.question.length > 50 ? `${faq?.question.slice(0, 50)}...` : faq?.question}</h1>
-                <img onClick={handleActive} className='w-[24px] h-[24px]' src={menu} alt="" />
+                <img onClick={handleActive} className='cursor-pointer w-[24px] h-[24px]' src={menu} alt="" />
                 <motion.div
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0 }}
                     className='w-[150px] flex flex-col justify-center items-center bg-[#FFF] rounded-[12px] absolute right-4 top-4 p-[10px] border-[1px] border-solid border-[#EAECF0]'>
-                    <div onClick={()=>handleEditFaq(faq?.id,faq)} className='cursor-pointer flex gap-[8px] p-[10px]'>
+                    <div onClick={() => handleEditFaq(faq?.id, faq)} className='cursor-pointer flex gap-[8px] p-[10px]'>
                         <img src={edit} alt="edit" />
                         <h1 className='whitespace-normal  text-[16px] font-[500] text-[#101828]'>Tahrirlash</h1>
                     </div>
