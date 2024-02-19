@@ -1,5 +1,8 @@
 .app {
+  display: flex;
+  align-items: start;
   .sadebar {
+    height: 100dvh;
     border-right: 2px solid var(--Gray-200, #eaecf0);
     background: var(--Base-White, #fff);
   }

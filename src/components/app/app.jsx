@@ -81,9 +81,9 @@ const App = () => {
         return initials.join('').toUpperCase();
     };
     return (
-        <div className={`flex app ${!(pathname === '/login') && "max-w-[1440px]"} h-screen  mx-auto relative  justify-end`}>
+        <div className={`app ${!(pathname === '/login') && "max-w-[1440px]"} mx-auto`}>
             {!(pathname === '/login') && (
-                <div className='w-[20%] sadebar fixed  h-screen left-0 top-0'>
+                <div className='w-[20%] mx-auto sidebar sticky top-0 h-screen'>
                     <div className="flex flex-row py-[32px] justify-start pl-[28px] items-center gap-1">
                         <img className='w-[38px]' src={logo3} alt="logo" />
                         <div className="flex flex-col items-start">
