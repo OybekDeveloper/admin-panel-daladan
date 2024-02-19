@@ -1,21 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import Pagination from '../pagination/pagination'
-import { ApiServices } from '../../services/api.get';
-import { addadmin } from '../admin/img';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { edit, trash } from './category-img';
-import DeleteModal from './delete-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { CategoryCreateModal, CategoryDeleteModal, CategoryEditModal, SelectCategory } from '../../reducer/events';
-import EditModal from './edit-modal';
-import CreateModal from './create-modal';
-import './category.scss'
+import React, { useEffect, useState } from "react";
+import Pagination from "../pagination/pagination";
+import { ApiServices } from "../../services/api.get";
+import { addadmin } from "../admin/img";
+import { useLocation, useNavigate } from "react-router-dom";
+import { edit, trash } from "./category-img";
+import DeleteModal from "./delete-modal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    CategoryCreateModal,
+    CategoryDeleteModal,
+    CategoryEditModal,
+    SelectCategory,
+} from "../../reducer/events";
+import EditModal from "./edit-modal";
+import CreateModal from "./create-modal";
+import "./category.scss";
 
 const Category = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { categoryDel, categoryEdit, categoryCreate } = useSelector(state => state.events)
-    const { pathname } = useLocation()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { categoryDel, categoryEdit, categoryCreate } = useSelector(
+        (state) => state.events
+    );
+    const [loading, setLoading] = useState(true);
+    const { pathname } = useLocation();
     const [category, setCategory] = useState([]);
     useEffect(() => {
         const body = document.querySelector(".app");
@@ -26,33 +34,43 @@ const Category = () => {
         }
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token')
-                const response = await ApiServices.getData("category/all", token)
-                setCategory(response)
-                dispatch(SelectCategory(response))
+                const token = localStorage.getItem("token");
+                const response = await ApiServices.getData("category/all", token);
+                setCategory(response);
+                dispatch(SelectCategory(response));
             } catch (err) {
-                console.log(err)
+                console.log(err);
+            } finally {
+                setLoading(false);
             }
-        }
+        };
         fetchData();
-    }, [categoryEdit, categoryDel, categoryCreate])
+    }, [categoryEdit, categoryDel, categoryCreate]);
     const handleCategoryDelete = (id) => {
-        dispatch(CategoryDeleteModal(id))
-    }
+        dispatch(CategoryDeleteModal(id));
+    };
     const handleCategoryEdit = (id) => {
         dispatch(CategoryEditModal([id, category]));
     };
     const handleCategoryCreate = () => {
-        dispatch(CategoryCreateModal())
-    }
+        dispatch(CategoryCreateModal());
+    };
     return (
-        <div className='category px-[24px] py-[32px] w-full'>
+        <div className="category px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
-                <ul className='flex category-links'>
-                    <li onClick={() => navigate('/category')} className={`${(pathname === '/category') && "bg-[#F9FAFB]"} cursor-pointer rounded-l-[8px] w-[110px] flex justify-center items-center hover:bg-[#F9FAFB] py-[8px] border-r-[1px] border-r-solid border-r-[#D0D5DD]`}>
+                <ul className="flex category-links">
+                    <li
+                        onClick={() => navigate("/category")}
+                        className={`${pathname === "/category" && "bg-[#F9FAFB]"
+                            } cursor-pointer rounded-l-[8px] w-[110px] flex justify-center items-center hover:bg-[#F9FAFB] py-[8px] border-r-[1px] border-r-solid border-r-[#D0D5DD]`}
+                    >
                         Kategoriya
                     </li>
-                    <li onClick={() => navigate('/department')} className={`${(pathname === '/department') && "bg-[#F9FAFB]"} cursor-pointer rounded-r-[8px] w-[110px] flex justify-center items-center hover:bg-[#F9FAFB] py-[8px]`}>
+                    <li
+                        onClick={() => navigate("/department")}
+                        className={`${pathname === "/department" && "bg-[#F9FAFB]"
+                            } cursor-pointer rounded-r-[8px] w-[110px] flex justify-center items-center hover:bg-[#F9FAFB] py-[8px]`}
+                    >
                         Bo’lim
                     </li>
                 </ul>
@@ -81,38 +99,56 @@ const Category = () => {
                             <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
                                 Nomi(kirilcha)
                             </th>
-                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-
-                            </th>
+                            <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start"></th>
                         </tr>
                     </thead>
                     <tbody className="w-full whitespace-nowrap overflow-y-auto">
-                        {category?.slice().reverse().map((item, idx) => (
-                            <tr
-                                key={item?.id}
-                                className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
-                            >
-                                <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
-                                    <img className='w-[40px] h-[40px]' src={item?.photoUrl} alt={item?.name} />
-                                </td>
-                                <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                    {item?.nameL}
-                                </td>
-                                <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                    {item?.nameK}
-                                </td>
-                                <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                    <div className='flex px-[16px] justify-center items-center'>
-                                        <img onClick={() => handleCategoryDelete(item?.id)} className='p-[10px]' src={trash} alt="trash" />
-                                        <img onClick={() => handleCategoryEdit(item?.id)} className='p-[10px]' src={edit} alt="trash" />
-                                    </div>
-
-                                </td>
-                            </tr>
-                        ))}
+                        {loading ? (
+                            <h1>Loading...</h1>
+                        ) : (
+                            category
+                                ?.slice()
+                                .reverse()
+                                .map((item, idx) => (
+                                    <tr
+                                        key={item?.id}
+                                        className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
+                                    >
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[500] text-[#101828] py-[16px] px-[24px]">
+                                            <img
+                                                className="w-[40px] h-[40px]"
+                                                src={item?.photoUrl}
+                                                alt={item?.name}
+                                            />
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            {item?.nameL}
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            {item?.nameK}
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            <div className="flex px-[16px] justify-center items-center">
+                                                <img
+                                                    onClick={() => handleCategoryDelete(item?.id)}
+                                                    className="p-[10px]"
+                                                    src={trash}
+                                                    alt="trash"
+                                                />
+                                                <img
+                                                    onClick={() => handleCategoryEdit(item?.id)}
+                                                    className="p-[10px]"
+                                                    src={edit}
+                                                    alt="trash"
+                                                />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                        )}
                     </tbody>
                 </table>
-                <div className='px-[24px] py-[12px]'>
+                <div className="px-[24px] py-[12px]">
                     <Pagination />
                 </div>
             </section>
@@ -120,7 +156,7 @@ const Category = () => {
             <CreateModal />
             <DeleteModal />
         </div>
-    )
-}
+    );
+};
 
-export default Category
+export default Category;
