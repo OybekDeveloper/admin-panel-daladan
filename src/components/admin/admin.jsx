@@ -246,6 +246,15 @@ const Admin = () => {
                                                         {errorMessage?.data?.phone}
                                                     </motion.h1>
                                                 )}
+                                                {errorMessage?.data?.errorMessage && (
+                                                    <motion.h1
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className="text-[12px] bg-red-200 rounded-[12px] p-[5px]">
+                                                        {errorMessage?.data?.errorMessage}
+                                                    </motion.h1>
+                                                )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
