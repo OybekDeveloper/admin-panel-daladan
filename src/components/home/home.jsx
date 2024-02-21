@@ -18,7 +18,7 @@ const Home = () => {
       id: 2,
       title: "Oylik",
       key: "MONTHLY",
-      check: false
+      check: true
     },
     {
       id: 3,
@@ -68,7 +68,7 @@ const Home = () => {
       <section className="flex justify-between items-center">
         <h1 className="text-[24px] font-[500]">Monitoring</h1>
         <div className="flex justify-center items-center gap-[16px]">
-          <div onClick={() => setIsDateActive(!isDateActive)} className="w-[100px] relative filter-data flex justify-center items-center px-[14px] py-[10px] cursor-pointer gap-[4px] z-10">
+          <div onClick={() => { setIsDateActive(!isDateActive); setIsActive(false) }} className="w-[100px] relative filter-data flex justify-center items-center px-[14px] py-[10px] cursor-pointer gap-[4px] z-10">
             <img src={calendar} alt="filter-data" />
             <h1 className="w-[80%] text-[14px] font-[600]">{activeDateName}</h1>
             <motion.div
@@ -98,7 +98,7 @@ const Home = () => {
             </motion.div>
           </div>
           <section className="relative">
-            <div onClick={() => setIsActive(!isActive)} className={`${isActive && "active"} calendar px-[14px] py-[10px] cursor-pointer`}>
+            <div onClick={() => { setIsActive(!isActive); setIsDateActive(false) }} className={`${isActive && "active"} calendar px-[14px] py-[10px] cursor-pointer`}>
               <img src={calendar} alt="" />
             </div>
             <motion.div
