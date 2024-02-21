@@ -12,7 +12,6 @@ export const ApiServices = {
     });
     return response.data;
   },
-
   async postData(url, body, token) {
     const response = await axios({
       method: "POST",

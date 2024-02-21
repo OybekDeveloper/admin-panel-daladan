@@ -41,6 +41,7 @@ const News = () => {
     };
     fetchData();
   }, [newsCreate, openAllNews]);
+  console.log(news)
 
   return (
     <div className="news px-[24px] py-[32px] w-full">
