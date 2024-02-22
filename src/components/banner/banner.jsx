@@ -3,28 +3,28 @@ import "./banner.scss";
 import { plus, trashb } from "./banner-img";
 import { ApiServices } from "../../services/api.get";
 import { useDispatch, useSelector } from "react-redux";
-import { BannerCreateModal, BannerDeleteModal } from "../../reducer/events";
+import { CreateModalData, DeleteModalData } from "../../reducer/events";
 import CreateModal from "./create-modal";
 import DeleteModal from "./delete-modal";
 import Loader from "../loader/loader";
 
 const Banner = () => {
-    const { bannerCreate, bannerDel } = useSelector((state) => state.events);
+    const { modalCreate, modalDel } = useSelector((state) => state.events);
     const dispatch = useDispatch();
     const [banner, setBanner] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const handleCreateBanner = () => {
-        dispatch(BannerCreateModal());
+        dispatch(CreateModalData());
     };
 
     const handleDeleteBanner = (id) => {
-        dispatch(BannerDeleteModal(id));
+        dispatch(DeleteModalData(id));
     };
 
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (bannerCreate || bannerDel) {
+        if (modalCreate || modalDel) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
@@ -37,12 +37,14 @@ const Banner = () => {
             } catch (err) {
                 console.error("Error fetching banner data:", err);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
 
         fetchData();
-    }, [bannerCreate, bannerDel]);
+    }, [modalCreate, modalDel]);
 
     return (
         <div className="banner px-[24px] py-[32px] w-full">

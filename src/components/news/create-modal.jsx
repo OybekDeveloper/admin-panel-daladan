@@ -1,11 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NewsCreateModal } from "../../reducer/events";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { close } from "../category/category-img";
+import { CreateModalData } from "../../reducer/events";
 
 const selectLeng = [
     {
@@ -19,7 +19,7 @@ const selectLeng = [
 ]
 
 const CreateModal = () => {
-    const { newsCreate } = useSelector((state) => state.events);
+    const { modalCreate } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
     const [selectActive, setSelectActive] = useState(false);
     const [lengSelect, setLengSelect] = useState(selectLeng)
@@ -32,17 +32,16 @@ const CreateModal = () => {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        const {  value } = e.target;
+        const { name, value } = e.target;
         setNewsCreatetData({
             ...newsCreateData,
-            titleL: lengSelect[0]?.title === "Uzbek" ? value : "null",
-            titleK: lengSelect[0]?.title === "Русский" ? value : "null",
-            messageL: lengSelect[0]?.title === "Uzbek" ? value : "null",
-            messageK: lengSelect[0]?.title === "Русский" ? value : "null",
+            [name]:value,
+            titleK: 'null',
+            messageK:"null"
         });
     };
     const handleClose = () => {
-        dispatch(NewsCreateModal());
+        dispatch(CreateModalData());
         setNewsCreatetData({
             "titleK": "",
             "titleL": "",
@@ -51,6 +50,7 @@ const CreateModal = () => {
         })
         setErrorMessage(null)
     };
+    console.log(newsCreateData)
     const handleSubmit = (e) => {
         e.preventDefault();
         const fetchData = async () => {
@@ -71,7 +71,7 @@ const CreateModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(NewsCreateModal())
+                dispatch(CreateModalData())
                 setNewsCreatetData({
                     "titleK": "",
                     "titleL": "",
@@ -91,7 +91,7 @@ const CreateModal = () => {
     }
     return (
         <div>
-            <Transition show={newsCreate} as={Fragment}>
+            <Transition show={modalCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}
@@ -225,14 +225,14 @@ const CreateModal = () => {
                                                                 transition={{ duration: 0.3 }}
                                                                 className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
                                                             >
-                                                                {errorMessage?.titleK}
+                                                                {errorMessage?.titleL}
                                                             </motion.h1>
                                                         )}
                                                     </label>
                                                     <input
                                                         className="mb-2 w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                         type="text"
-                                                        name="titleK"
+                                                        name="titleL"
                                                         placeholder="Имя"
                                                         onChange={handleChange}
                                                     />
@@ -247,14 +247,14 @@ const CreateModal = () => {
                                                                 transition={{ duration: 0.3 }}
                                                                 className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
                                                             >
-                                                                {errorMessage?.messageK}
+                                                                {errorMessage?.messageL}
                                                             </motion.h1>
                                                         )}
                                                     </label>
                                                     <textarea
                                                         className="w-full h-[150px] flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                         type="text"
-                                                        name="messageK"
+                                                        name="messageL"
                                                         placeholder="Напишите комментарий к новости..."
                                                         onChange={handleChange}
                                                     />

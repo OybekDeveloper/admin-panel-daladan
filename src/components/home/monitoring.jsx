@@ -5,13 +5,11 @@ import Loader from '../loader/loader';
 const Monitoring = ({ getData }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-    console.log(JSON.stringify(getData))
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem("token")
                 const response = await ApiServices.postData('products/statistics', getData, token)
-                console.log(response)
                 setData(response)
             } catch (err) {
                 console.log(err)

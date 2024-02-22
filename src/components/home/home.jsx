@@ -29,6 +29,7 @@ const Home = () => {
   ])
   const [activeDateName, setActiveDateName] = useState("Oylik")
   const [isActive, setIsActive] = useState(false);
+  const [isActiveCheck, setIsActiveCheck] = useState(false);
   const [isDateActive, setIsDateActive] = useState(false);
   const [value, onChange] = useState(new Date());
   const [fetchData, setFetchData] = useState({ key: "MONTHLY" })
@@ -68,21 +69,21 @@ const Home = () => {
       <section className="flex justify-between items-center">
         <h1 className="text-[24px] font-[500]">Monitoring</h1>
         <div className="flex justify-center items-center gap-[16px]">
-          <div onClick={() => { setIsDateActive(!isDateActive); setIsActive(false) }} className="w-[100px] relative filter-data flex justify-center items-center px-[14px] py-[10px] cursor-pointer gap-[4px] z-10">
+          <div onClick={() => { setIsActiveCheck(!isActiveCheck); setIsActive(false); setIsDateActive(!isDateActive) }} className={`${isDateActive && "active"} w-[100px] relative filter-data flex justify-center items-center px-[14px] py-[10px] cursor-pointer gap-[4px] z-10 hover:bg-[#F9FAFB]`}>
             <img src={calendar} alt="filter-data" />
             <h1 className="w-[80%] text-[14px] font-[600]">{activeDateName}</h1>
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{
-                opacity: isDateActive ? 1 : 0,
-                scale: isDateActive ? 1 : 0,
+                opacity: isActiveCheck ? 1 : 0,
+                scale: isActiveCheck ? 1 : 0,
               }}
               transition={{ duration: 0.3 }}
               className={`w-[200px] absolute border-[1px] border-solid p-[4px] rounded-[8px] border-[#EAECF0] top-[45px] gap-[5px] flex flex-col justify-between  px-[6px] bg-[#fff] right-0`}
             >
               {date.map((item) => (
                 <div
-                  onClick={() => handleActiveDate(item.id)}  // <-- Fix the double function invocation
+                  onClick={() => handleActiveDate(item.id)}
                   key={item.id}
                   className="py-[10px] px-[8px] rounded-[6px] hover:bg-[#F9FAFB] flex justify-between items-center"
                 >
@@ -98,7 +99,7 @@ const Home = () => {
             </motion.div>
           </div>
           <section className="relative">
-            <div onClick={() => { setIsActive(!isActive); setIsDateActive(false) }} className={`${isActive && "active"} calendar px-[14px] py-[10px] cursor-pointer`}>
+            <div onClick={() => { setIsActive(!isActive); setIsActiveCheck(false); setIsDateActive(false) }} className={`${isActive && "active"} calendar px-[14px] py-[10px] cursor-pointer hover:bg-[#F9FAFB]`}>
               <img src={calendar} alt="" />
             </div>
             <motion.div
@@ -106,8 +107,9 @@ const Home = () => {
               animate={{ scale: isActive ? 1 : 0 }}
               className="absolute right-0 bg-[#fff] z-10 top-[50px]">
               <Calendar
+                tileClassName={"rounded-full p-2"}
                 className={
-                  "border-solid border-[1px] border-[#EAECF0] rounded-[12px]"
+                  "border-solid border-[1px] border-[#EAECF0] rounded-[12px] p-8"
                 }
                 onChange={(date) => onChange(date)}
                 value={value}

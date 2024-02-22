@@ -8,6 +8,8 @@ import logo1 from "./Subtract (1).svg";
 import logo2 from "./Subtract (2).svg";
 import logo3 from "./Union.svg";
 import logout from "./logout.svg";
+import user from './user.svg'
+import contact from './contact.svg'
 export {
   home,
   admin,
@@ -19,4 +21,6 @@ export {
   logo2,
   logo3,
   logout,
+  user,
+  contact
 };

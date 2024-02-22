@@ -1,14 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoryCreateModal, DepartmentCreateModal, DepartmentEditModal } from "../../reducer/events";
 import { close } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { EditModalData } from "../../reducer/events";
 
 const EditModal = () => {
-    const { departmentEdit, defaultEditDepartment, editDepartmentId } = useSelector((state) => state.events);
+    const { modalEdit, defaultEditDepartment, editModalId } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
     const [departmentEditData, setDepartmentEditData] = useState([]);
     const dispatch = useDispatch();
@@ -21,25 +21,25 @@ const EditModal = () => {
         });
     };
     const handleClose = () => {
-        dispatch(DepartmentEditModal());
+        dispatch(EditModalData());
         setDepartmentEditData(null)
     };
 
     useEffect(() => {
-        if (departmentEdit) {
+        if (modalEdit) {
             if (defaultEditDepartment.length > 0) {
                 const { nameL, nameK } = defaultEditDepartment[0];
                 setDepartmentEditData({ nameL, nameK });
             }
         }
-    }, [departmentEdit, defaultEditDepartment]);
+    }, [modalEdit, defaultEditDepartment]);
     const handleSubmit = (e) => {
         e.preventDefault();
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token')
                 await ApiServices.putData(
-                    `sub-category/update/${editDepartmentId}`,
+                    `sub-category/update/${editModalId}`,
                     departmentEditData,
                     token
                 );
@@ -53,7 +53,7 @@ const EditModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(DepartmentEditModal())
+                dispatch(EditModalData())
                 setDepartmentEditData(null)
                 setErrorMessage('')
             } catch (err) {
@@ -63,10 +63,9 @@ const EditModal = () => {
         };
         fetchData();
     };
-    console.log(departmentEditData)
     return (
         <div>
-            <Transition show={departmentEdit} as={Fragment}>
+            <Transition show={modalEdit} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

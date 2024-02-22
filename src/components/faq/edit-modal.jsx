@@ -1,14 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaqCreateModal, FaqEditModal } from "../../reducer/events";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { close } from "../category/category-img";
+import { EditModalData } from "../../reducer/events";
 
 const EditModal = () => {
-    const { faqEdit, editFaqId, defaultEdit } = useSelector((state) => state.events);
+    const { modalEdit,editModalId, defaultEdit } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
     const [faqCreateData, setFaqCreatetData] = useState({
         "questionL": defaultEdit?.questionL,
@@ -28,7 +28,7 @@ const EditModal = () => {
         });
     };
     const handleClose = () => {
-        dispatch(FaqEditModal());
+        dispatch(EditModalData());
         setFaqCreatetData({
             "questionL": "",
             "questionK": "",
@@ -44,7 +44,7 @@ const EditModal = () => {
                 const token = localStorage.getItem('token')
                 await ApiServices.postData(
                     `faq`,
-                    editFaqId,
+                    editModalId,
                     token
                 );
                 toast.success("FAQ successfully created!", {
@@ -57,7 +57,7 @@ const EditModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(FaqEditModal())
+                dispatch(EditModalData())
                 setFaqCreatetData({
                     "titleK": "",
                     "titleL": "",
@@ -74,7 +74,7 @@ const EditModal = () => {
     };
     return (
         <div>
-            <Transition show={faqEdit} as={Fragment}>
+            <Transition show={modalEdit} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

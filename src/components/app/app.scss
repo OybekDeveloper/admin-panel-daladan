@@ -1,14 +1,13 @@
 .app {
   display: flex;
   align-items: start;
-  .sadebar {
+  .sidebar {
     height: 100dvh;
     border-right: 2px solid var(--Gray-200, #eaecf0);
     background: var(--Base-White, #fff);
   }
   .active {
     border-radius: 6px;
-    background: var(--Gray-50, #ecedee);
   }
   .logout-img {
     transition: all 0.3s ease-in-out;

@@ -2,13 +2,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateModalData } from "../../reducer/events";
-import { close, upload } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { imageDb } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { close, upload } from "../category/category-img";
 
 const CreateModal = () => {
     const { modalCreate } = useSelector((state) => state.events);
@@ -17,8 +17,8 @@ const CreateModal = () => {
     const [showProgress, setShowProgress] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
     const [errorMessagePost, setErrorMessagePost] = useState();
-    const [categoryCreateData, setCategoryCreatetData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [contactCreateData, setContactCreatetData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const fileInputRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -27,8 +27,8 @@ const CreateModal = () => {
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setCategoryCreatetData({
-            ...categoryCreateData,
+        setContactCreatetData({
+            ...contactCreateData,
             [name]: value,
         });
     };
@@ -41,7 +41,7 @@ const CreateModal = () => {
                 return getDownloadURL(imgRef);
             })
             .then((url) => {
-                setCategoryCreatetData({ ...categoryCreateData, photoUrl: url })
+                setContactCreatetData({ ...contactCreateData, icon: url });
             })
             .catch((error) => {
                 console.error("Error getting download URL:", error);
@@ -64,28 +64,23 @@ const CreateModal = () => {
             setShowProgress(true);
             const fetchData = async () => {
                 try {
-                    await axios.post(
-                        "",
-                        formData,
-                        {
-                            onUploadProgress: ({ loaded, total }) => {
-                                const newLoadingPercentage = Math.floor((loaded / total) * 100);
-                                setLoadingPercentage(newLoadingPercentage);
-                                if (total === loaded) {
-                                    const fileSize =
-                                        total < 1024 * 1024
-                                            ? `${(total / 1024).toFixed(2)} KB`
-                                            : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
+                    await axios.post("", formData, {
+                        onUploadProgress: ({ loaded, total }) => {
+                            const newLoadingPercentage = Math.floor((loaded / total) * 100);
+                            setLoadingPercentage(newLoadingPercentage);
+                            if (total === loaded) {
+                                const fileSize =
+                                    total < 1024 * 1024
+                                        ? `${(total / 1024).toFixed(2)} KB`
+                                        : `${(loaded / (1024 * 1024)).toFixed(2)} MB`;
 
-                                    setUploadedFile({ name: fileName, size: fileSize });
-                                }
-                            },
-                        }
-                    );
-                } catch (err) {
-                }
-            }
-            fetchData()
+                                setUploadedFile({ name: fileName, size: fileSize });
+                            }
+                        },
+                    });
+                } catch (err) { }
+            };
+            fetchData();
         } else {
             setErrorMessage("Upload only png and jpg images!");
         }
@@ -94,26 +89,22 @@ const CreateModal = () => {
         dispatch(CreateModalData());
         setShowProgress(false);
         setUploadedFile(null);
-        setErrorMessagePost(null)
-        setIsLoading(true)
-        setCategoryCreatetData(null)
+        setErrorMessagePost(null);
+        setIsLoading(true);
+        setContactCreatetData(null);
     };
     useEffect(() => {
-        if (categoryCreateData?.photoUrl) setIsLoading(false);
-    }, [categoryCreateData])
-
+        if (contactCreateData?.icon) setIsLoading(false);
+    }, [contactCreateData]);
+    console.log(contactCreateData)
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLoading) {
             const fetchData = async () => {
                 try {
-                    const token = localStorage.getItem('token')
-                    await ApiServices.postData(
-                        `category`,
-                        categoryCreateData,
-                        token
-                    );
-                    toast.success("Category successfully created!", {
+                    const token = localStorage.getItem("token");
+                    await ApiServices.postData(`contact`, contactCreateData, token);
+                    toast.success("Contact successfully created!", {
                         position: "top-right",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -123,15 +114,15 @@ const CreateModal = () => {
                         progress: undefined,
                         theme: "colored",
                     });
-                    setCategoryCreatetData(null)
-                    setUploadedFile(null)
-                    setShowProgress(false)
-                    setIsLoading(true)
-                    setErrorMessagePost(null)
+                    setContactCreatetData(null);
+                    setUploadedFile(null);
+                    setShowProgress(false);
+                    setIsLoading(true);
+                    setErrorMessagePost(null);
                     dispatch(CreateModalData());
                 } catch (err) {
                     console.log(err);
-                    setErrorMessagePost(err?.response?.data)
+                    setErrorMessagePost(err?.response?.data);
                 }
             };
             fetchData();
@@ -167,7 +158,7 @@ const CreateModal = () => {
                                 <div className="w-[400px] p-[24px]">
                                     <div className="flex justify-between items-center pb-[5px]">
                                         <h1 className="text-[18px] font-[600]">
-                                            Kategoriya qo'shish
+                                            Ma’lumot qo’shish
                                         </h1>
                                         <img
                                             onClick={handleClose}
@@ -177,51 +168,56 @@ const CreateModal = () => {
                                         />
                                     </div>
                                     <p className="text-[14px] font-[400] text-[#475467] pt-[4px]">
-                                        Kategoriya qo'shish uchun quyidagi ma’lumotlarni
-                                        to’ldiring
+                                        Ma’lumot qo’shish uchun quyidagi ma’lumotlarni to’ldiring
                                     </p>
                                     <form className="w-[360px] flex flex-col gap-[16px] pt-[10px]">
                                         <div className="flex flex-col gap-[6px]">
-                                            <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
-                                                <h1> Kategoriya nomi (lotincha)</h1>
-                                                {errorMessagePost?.nameL && (
+                                            <label
+                                                className="flex justify-start items-center gap-2 text-[14px] font-[500]"
+                                                htmlFor="text"
+                                            >
+                                                <h1> Ijtimoiy tarmoq nomi</h1>
+                                                {errorMessagePost?.name && (
                                                     <motion.h1
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
                                                         transition={{ duration: 0.3 }}
                                                         className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
                                                     >
-                                                        {errorMessagePost?.nameL}
+                                                        {errorMessagePost?.name}
                                                     </motion.h1>
                                                 )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="nameL"
-                                                placeholder="Nomi"
+                                                name="name"
+                                                placeholder="Nomini kiriting"
                                                 onChange={handleChange}
                                             />
                                         </div>
                                         <div className="flex flex-col gap-[6px]">
-                                            <label className="flex justify-start items-center gap-2 text-[14px] font-[500]" htmlFor="text">
-                                                <h1>Kategoriya nomi (kirilcha)</h1>
-                                                {errorMessagePost?.nameK && (
+                                            <label
+                                                className="flex justify-start items-center gap-2 text-[14px] font-[500]"
+                                                htmlFor="text"
+                                            >
+                                                <h1>URL</h1>
+                                                {errorMessagePost?.url && (
                                                     <motion.h1
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
                                                         transition={{ duration: 0.3 }}
                                                         className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
                                                     >
-                                                        {errorMessagePost?.nameK}
+                                                        {errorMessagePost?.url}
                                                     </motion.h1>
                                                 )}
                                             </label>
                                             <input
                                                 className="w-full flex px-[14px] py-[10px] border-[1px] border-solid border-[#D0D5DD] rounded-[8px] focus:outline-[1px] focus:outline-solid outline-[#84caff] focus:shadow-custom"
                                                 type="text"
-                                                name="nameK"
-                                                placeholder="Nomi"
+                                                name="url"
+                                                placeholder="URL ni kiriting"
                                                 onChange={handleChange}
                                             />
                                         </div>
@@ -306,7 +302,8 @@ const CreateModal = () => {
                                         <button
                                             type="submit"
                                             onClick={handleSubmit}
-                                            className={`${isLoading && "opacity-[0.5]"} w-full mt-[32px] bg-[#2E90FA] text-[#fff] text-[16px] font-[600] rounded-[8px] px-[16px] py-[10px] border-[1px] border-solid border-[#1570EF]`}
+                                            className={`${isLoading && "opacity-[0.5]"
+                                                } w-full mt-[32px] bg-[#2E90FA] text-[#fff] text-[16px] font-[600] rounded-[8px] px-[16px] py-[10px] border-[1px] border-solid border-[#1570EF]`}
                                         >
                                             Saqlash
                                         </button>

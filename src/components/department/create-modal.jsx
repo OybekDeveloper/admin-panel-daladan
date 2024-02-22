@@ -1,15 +1,15 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoryCreateModal, DepartmentCreateModal } from "../../reducer/events";
+import { CreateModalData } from "../../reducer/events";
 import { close } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { check1, down } from "../admin/img";
+import {  down } from "../admin/img";
 
 const CreateModal = () => {
-    const { departmentCreate, selectCategory } = useSelector((state) => state.events);
+    const { modalCreate, selectCategory } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
     const [departmentCreateData, setDepartmentCreatetData] = useState([]);
     const [isActive, setIsActive] = useState(false)
@@ -24,7 +24,7 @@ const CreateModal = () => {
         });
     };
     const handleClose = () => {
-        dispatch(DepartmentCreateModal());
+        dispatch(CreateModalData());
         setDepartmentCreatetData(null)
         setIsActive(false);
         setSelectName(null);
@@ -55,10 +55,9 @@ const CreateModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(DepartmentCreateModal())
                 setDepartmentCreatetData(null)
                 setSelectName(null)
-                dispatch(CategoryCreateModal());
+                dispatch(CreateModalData());
                 setErrorMessage('')
             } catch (err) {
                 console.log(err);
@@ -69,7 +68,7 @@ const CreateModal = () => {
     };
     return (
         <div>
-            <Transition show={departmentCreate} as={Fragment}>
+            <Transition show={modalCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

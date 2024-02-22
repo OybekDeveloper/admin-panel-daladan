@@ -5,19 +5,19 @@ import { addadmin } from "../admin/img";
 import { ApiServices } from "../../services/api.get";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    DepartmentCreateModal,
-    DepartmentDeleteModal,
-    DepartmentEditModal,
+    CreateModalData,
+    DeleteModalData,
+    EditModalData,
     SelectCategory,
 } from "../../reducer/events";
 import Pagination from "../pagination/pagination";
 import CreateModal from "./create-modal";
 import DeleteModal from "./delete-modal";
 import EditModal from "./edit-modal";
-import "./department.scss";
 import Loader from "../loader/loader";
+import "./department.scss";
 const Department = () => {
-    const { departmentCreate, departmentDel, departmentEdit } = useSelector(
+    const { modalCreate, modalEdit, modalDel } = useSelector(
         (state) => state.events
     );
     const navigate = useNavigate();
@@ -26,13 +26,13 @@ const Department = () => {
     const [loading, setLoading] = useState(true)
     const dispatch = useDispatch();
     const handleDepartmentCreate = () => {
-        dispatch(DepartmentCreateModal());
+        dispatch(CreateModalData());
     };
     const handleDepartmentDelete = (id) => {
-        dispatch(DepartmentDeleteModal(id));
+        dispatch(DeleteModalData(id));
     };
     const handleDepartmentEdit = (id) => {
-        dispatch(DepartmentEditModal([id, department]));
+        dispatch(EditModalData([id, department]));
     };
     const handleStatusUpdate = async (id, status) => {
         try {
@@ -49,10 +49,9 @@ const Department = () => {
             console.log(err);
         }
     };
-    console.log(departmentEdit);
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (departmentCreate || departmentDel || departmentEdit) {
+        if (modalDel || modalCreate || modalEdit) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
@@ -70,7 +69,7 @@ const Department = () => {
         };
         fetchData();
         //eslint-disable-next-line
-    }, [departmentCreate, departmentDel, departmentEdit]);
+    }, [modalCreate, modalEdit, modalDel]);
     useEffect(() => {
         const token = localStorage.getItem("token");
         const fetchData = async () => {
@@ -83,11 +82,13 @@ const Department = () => {
             } catch (err) {
                 console.log(err);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
         fetchData();
-    }, [departmentCreate, departmentDel, departmentEdit]);
+    }, [modalCreate, modalEdit, modalDel]);
     return (
         <div className="department px-[24px] py-[32px] w-full">
             <section className="flex justify-between items-center">
@@ -148,7 +149,7 @@ const Department = () => {
                                     .reverse()
                                     .map((item, idx) => (
                                         <tr
-                                            key={item?.id}
+                                            key={idx}
                                             className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
                                         >
                                             <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">

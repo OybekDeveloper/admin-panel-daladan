@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "../pagination/pagination";
-import { addadmin } from "../admin/img";
 import { ApiServices } from "../../services/api.get";
-import "./news.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { NewsCreateModal, ShowSelectNews } from "../../reducer/events";
+import { CreateModalData, ShowSelectNews } from "../../reducer/events";
 import CreateModal from "./create-modal";
 import SelectNews from "./select-news";
 import { plus } from "../banner/banner-img";
 import Loader from "../loader/loader";
+import "./news.scss";
+
 const News = () => {
-  const { newsCreate, openAllNews } = useSelector((state) => state.events);
+  const { modalCreate, openAllNews } = useSelector((state) => state.events);
   const dispatch = useDispatch();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,11 +18,11 @@ const News = () => {
     dispatch(ShowSelectNews([id, news]));
   };
   const handleCreateNews = () => {
-    dispatch(NewsCreateModal());
+    dispatch(CreateModalData());
   };
   useEffect(() => {
     const body = document.querySelector(".app");
-    if (newsCreate || openAllNews) {
+    if (modalCreate || openAllNews) {
       body.classList.add("blur-effect");
     } else {
       body.classList.remove("blur-effect");
@@ -36,12 +35,13 @@ const News = () => {
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     fetchData();
-  }, [newsCreate, openAllNews]);
-  console.log(news)
+  }, [modalCreate, openAllNews]);
 
   return (
     <div className="news px-[24px] py-[32px] w-full">

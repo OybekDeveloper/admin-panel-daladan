@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BannerCreateModal, CategoryCreateModal } from "../../reducer/events";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { imageDb } from "../../firebase/config";
@@ -9,9 +8,10 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { close, upload } from "../category/category-img";
+import { CreateModalData } from "../../reducer/events";
 
 const CreateModal = () => {
-    const { bannerCreate } = useSelector((state) => state.events);
+    const { modalCreate } = useSelector((state) => state.events);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [showProgress, setShowProgress] = useState(false);
@@ -91,7 +91,7 @@ const CreateModal = () => {
         }
     };
     const handleClose = () => {
-        dispatch(BannerCreateModal());
+        dispatch(CreateModalData());
         setShowProgress(false);
         setUploadedFile(null);
         setErrorMessagePost(null)
@@ -129,7 +129,7 @@ const CreateModal = () => {
                     setShowProgress(false)
                     setIsLoading(true)
                     setErrorMessagePost(null)
-                    dispatch(BannerCreateModal());
+                    dispatch(CreateModalData());
                 } catch (err) {
                     console.log(err);
                     setErrorMessagePost(err?.response?.data)
@@ -138,10 +138,9 @@ const CreateModal = () => {
             fetchData();
         }
     };
-    console.log(bannerCreateData)
     return (
         <div>
-            <Transition show={bannerCreate} as={Fragment}>
+            <Transition show={modalCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

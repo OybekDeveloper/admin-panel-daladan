@@ -11,7 +11,6 @@ const SelectFaq = () => {
     const handleClose = () => {
         dispatch(ShowSelectFaq());
     };
-    console.log(selectFaq)
     return (
         <div>
             <Transition show={openSelectFaq} as={Fragment}>

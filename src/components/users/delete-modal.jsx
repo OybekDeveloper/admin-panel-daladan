@@ -15,9 +15,9 @@ const DeleteModal = () => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token')
-            await ApiServices.delData(`faq/${deleteModalId}`, token);
+            await ApiServices.delData(`users/delete-account/${deleteModalId}`, token);
             dispatch(DeleteModalData())
-            toast.error("FAQ successfully deleted!", {
+            toast.error("User successfully deleted!", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -64,8 +64,8 @@ const DeleteModal = () => {
                                         <img className=' p-[12px]' src={trashIcon} alt="trash icon" />
                                         <img onClick={handleClose} className='cursor-pointer p-[12px]' src={close} alt="close" />
                                     </div>
-                                    <h1 className='text-[18px] font-[600] pt-[16px]'>FAQ o’chirish</h1>
-                                    <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>FAQ o’chirishni xohlaysizmi?</p>
+                                    <h1 className='text-[18px] font-[600] pt-[16px]'>Foydalanuvchini o’chirish</h1>
+                                    <p className='text-[14px] font-[400] text-[#475467] pt-[4px]'>Foydalanuvchini o’chirishni xohlaysizmi?</p>
                                     <div className='w-full flex justify-around items-center gap-[12px] pt-[32px]'>
                                         <button onClick={handleClose} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] border-[#D0D5DD] bg-[#fff] px-[16px] py-[10px]'>Bekor qilish</button>
                                         <button onClick={handleDelete} className='w-[170px] text-[16px] font-[600] rounded-[8px] border-solid border-[1px] bg-[#D92D20] px-[16px] py-[10px] text-[#fff]'>O’chirish</button>

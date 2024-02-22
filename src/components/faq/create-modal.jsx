@@ -1,14 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaqCreateModal } from "../../reducer/events";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { close } from "../category/category-img";
+import { CreateModalData } from "../../reducer/events";
 
 const CreateModal = () => {
-    const { faqCreate } = useSelector((state) => state.events);
+    const { modalCreate } = useSelector((state) => state.events);
     const [errorMessage, setErrorMessage] = useState();
     const [faqCreateData, setFaqCreatetData] = useState({
         "questionL": "",
@@ -28,7 +28,7 @@ const CreateModal = () => {
         });
     };
     const handleClose = () => {
-        dispatch(FaqCreateModal());
+        dispatch(CreateModalData());
         setFaqCreatetData({
             "questionL": "",
             "questionK": "",
@@ -57,7 +57,7 @@ const CreateModal = () => {
                     progress: undefined,
                     theme: "colored",
                 });
-                dispatch(FaqCreateModal())
+                dispatch(CreateModalData())
                 setFaqCreatetData({
                     "titleK": "",
                     "titleL": "",
@@ -74,7 +74,7 @@ const CreateModal = () => {
     };
     return (
         <div>
-            <Transition show={faqCreate} as={Fragment}>
+            <Transition show={modalCreate} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

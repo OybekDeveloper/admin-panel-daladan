@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CategoryEditModal } from "../../reducer/events";
+import { CategoryEditModal, EditModalData } from "../../reducer/events";
 import { close, upload } from "./category-img";
 import { ApiServices } from "../../services/api.get";
 import { motion } from "framer-motion";
@@ -10,7 +10,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
 import { toast } from "react-toastify";
 const EditModal = () => {
-    const { categoryEdit, editCategoryId, defaultEditCategory } = useSelector((state) => state.events);
+    const { modalEdit, editModalId, defaultEditCategory } = useSelector((state) => state.events);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
     const [uploadedFile, setUploadedFile] = useState(null);
     const [showProgress, setShowProgress] = useState(false);
@@ -84,7 +84,7 @@ const EditModal = () => {
         }
     };
     const handleClose = () => {
-        dispatch(CategoryEditModal());
+        dispatch(EditModalData());
         setShowProgress(false);
         setUploadedFile(null);
     };
@@ -94,7 +94,7 @@ const EditModal = () => {
 
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (categoryEdit) {
+        if (modalEdit) {
             body.classList.add("blur-effect");
 
             if (defaultEditCategory.length > 0) {
@@ -104,7 +104,7 @@ const EditModal = () => {
         } else {
             body.classList.remove("blur-effect");
         }
-    }, [categoryEdit, defaultEditCategory]);
+    }, [modalEdit, defaultEditCategory]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -113,7 +113,7 @@ const EditModal = () => {
                 try {
                     const token = localStorage.getItem("token");
                     await ApiServices.putData(
-                        `category/update/${editCategoryId}`,
+                        `category/update/${editModalId}`,
                         categoryEditData,
                         token
                     );
@@ -129,7 +129,7 @@ const EditModal = () => {
                     });
                     setCategoryEditData("");
                     setIsLoading(true)
-                    dispatch(CategoryEditModal());
+                    dispatch(EditModalData());
                     setShowProgress(false)
                     setUploadedFile(null)
 
@@ -142,7 +142,7 @@ const EditModal = () => {
     };
     return (
         <div>
-            <Transition show={categoryEdit} as={Fragment}>
+            <Transition show={modalEdit} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

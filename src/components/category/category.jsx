@@ -7,9 +7,9 @@ import { edit, trash } from "./category-img";
 import DeleteModal from "./delete-modal";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    CategoryCreateModal,
-    CategoryDeleteModal,
-    CategoryEditModal,
+    CreateModalData,
+    DeleteModalData,
+    EditModalData,
     SelectCategory,
 } from "../../reducer/events";
 import EditModal from "./edit-modal";
@@ -20,42 +20,56 @@ import Loader from "../loader/loader";
 const Category = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { categoryDel, categoryEdit, categoryCreate } = useSelector(
+    const { modalDel, modalEdit, modalCreate } = useSelector(
         (state) => state.events
     );
     const [loading, setLoading] = useState(true);
     const { pathname } = useLocation();
     const [category, setCategory] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 1;
     useEffect(() => {
         const body = document.querySelector(".app");
-        if (categoryCreate || categoryDel || categoryEdit) {
+        if (modalCreate || modalDel || modalEdit) {
             body.classList.add("blur-effect");
         } else {
             body.classList.remove("blur-effect");
         }
+
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await ApiServices.getData("category/all", token);
+                const response = await ApiServices.getData(
+                    `category/all?page=${1}&limit=${1}`,
+                    token
+                );
                 setCategory(response);
                 dispatch(SelectCategory(response));
             } catch (err) {
                 console.log(err);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
+
         fetchData();
-        //eslint-disable-next-line
-    }, [categoryEdit, categoryDel, categoryCreate]);
+        // eslint-disable-next-line
+    }, [modalEdit, modalDel, modalCreate, currentPage]);
+
+    const handlePageClick = ({ selected }) => {
+        setCurrentPage(selected + 1);
+    };
     const handleCategoryDelete = (id) => {
-        dispatch(CategoryDeleteModal(id));
+        dispatch(DeleteModalData(id));
     };
     const handleCategoryEdit = (id) => {
-        dispatch(CategoryEditModal([id, category]));
+        dispatch(EditModalData([id, category]));
     };
     const handleCategoryCreate = () => {
-        dispatch(CategoryCreateModal());
+        dispatch(CreateModalData())
     };
     return (
         <div className="category px-[24px] py-[32px] w-full">
@@ -151,7 +165,10 @@ const Category = () => {
                             </tbody>
                         </table>
                         <div className="px-[24px] py-[12px]">
-                            <Pagination />
+                            <Pagination
+                                pageCount={Math.ceil(category?.length / itemsPerPage)}
+                                onPageChange={handlePageClick}
+                            />
                         </div>
                     </>
                 )}

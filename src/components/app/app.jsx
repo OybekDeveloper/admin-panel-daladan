@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ApiServices } from '../../services/api.get'
-import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout } from './img'
+import { logo1, logo2, logo3, home, admin, category, news, banner, faq, logout, user, contact } from './img'
 import Login from '../login/login'
 import Home from '../home/home'
 import Category from '../category/category'
 import Department from '../department/department'
 import Admin from '../admin/admin'
-import './app.scss'
 import News from '../news/news'
 import Banner from '../banner/banner'
 import FAQ from '../faq/faq'
+import Users from '../users/users'
+import './app.scss'
+import Contact from '../contact/contact'
 const links = [
     {
         id: 1,
@@ -47,6 +49,18 @@ const links = [
         name: "FAQ",
         icon: faq,
         url: ['/faq']
+    },
+    {
+        id: 7,
+        name: "Foydalanuvchilar",
+        icon: user,
+        url: ['/users']
+    },
+    {
+        id: 8,
+        name: "Contact",
+        icon: contact,
+        url: ['/contact']
     },
 ]
 const App = () => {
@@ -129,6 +143,8 @@ const App = () => {
                     <Route path='/news' element={<News />} />
                     <Route path='/banner' element={<Banner />} />
                     <Route path='/faq' element={<FAQ />} />
+                    <Route path='/users' element={<Users />} />
+                    <Route path='/contact' element={<Contact />} />
                     <Route path='/login' element={<Login />} />
                 </Routes>
             </div>

@@ -52,7 +52,6 @@ const Admin = () => {
     const handleActive = (name) => {
         setIsActive(!isActive);
         setSelected(people.filter((item) => item.name === name));
-        console.log(selected);
         const updatedPeople = people.map((item) => ({
             ...item,
             check: item.name === name,
@@ -108,7 +107,6 @@ const Admin = () => {
             } catch (err) {
                 console.log(err);
                 setErrorMessage(err?.response);
-                console.log(errorMessage);
             } finally {
                 setLoading(false);
             }
@@ -124,7 +122,9 @@ const Admin = () => {
             } catch (err) {
                 console.log(err);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
         fetchData();

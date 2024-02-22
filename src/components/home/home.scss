@@ -2,8 +2,7 @@
   .filter-data {
     border-radius: 8px;
     border: 1px solid var(--Gray-300, #d0d5dd);
-    background: var(--Base-White, #fff);
-
+    transition: all 0.3s ease-in-out;
     /* Shadows/shadow-xs */
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   }
@@ -11,12 +10,13 @@
     transition: all 0.3s ease-in-out;
     border-radius: 8px;
     border: 1px solid var(--Gray-300, #d0d5dd);
-    background: var(--Base-White, #fff);
 
     /* Shadows/shadow-xs */
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   }
   .active {
+    border: 1px solid var(--Gray-300, #d0d5dd);
+    background: var(--Base-White, #fff);
     box-shadow: 0px 0px 0px 4px rgba(152, 162, 179, 0.14),
       0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   }

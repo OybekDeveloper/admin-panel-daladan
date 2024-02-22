@@ -1,22 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DepartmentDeleteModal } from '../../reducer/events'
+import { DeleteModalData } from '../../reducer/events'
 import { close, line, trashIcon } from './category-img'
 import { ApiServices } from '../../services/api.get'
 import { toast } from 'react-toastify'
 const DeleteModal = () => {
 
-    const { departmentDel, deleteDepartmentId } = useSelector(state => state.events)
+    const { modalDel, deleteModalId } = useSelector(state => state.events)
     const dispatch = useDispatch()
     const handleClose = () => {
-        dispatch(DepartmentDeleteModal())
+        dispatch(DeleteModalData())
     }
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token')
-            await ApiServices.delData(`sub-category/${deleteDepartmentId}`, token);
-            dispatch(DepartmentDeleteModal())
+            await ApiServices.delData(`sub-category/${deleteModalId}`, token);
+            dispatch(DeleteModalData())
             toast.error("Sub-Category successfully deleted!", {
                 position: "top-right",
                 autoClose: 3000,
@@ -33,7 +33,7 @@ const DeleteModal = () => {
     }
     return (
         <div>
-            <Transition show={departmentDel} as={Fragment}>
+            <Transition show={modalDel} as={Fragment}>
                 <Dialog onClose={handleClose}>
                     <Transition.Child
                         as={Fragment}

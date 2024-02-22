@@ -5,24 +5,23 @@ import FaqItem from "./faq-item";
 import "./faq.scss";
 import SelectFaq from "./select-faq";
 import { useDispatch, useSelector } from "react-redux";
-import { FaqCreateModal } from "../../reducer/events";
+import { CreateModalData } from "../../reducer/events";
 import CreateModal from "./create-modal";
 import DeleteModal from "./delete-modal";
-import EditModal from "./edit-modal";
 import Loader from "../loader/loader";
 const FAQ = () => {
-  const { faqCreate, faqDel, openSelectFaq } = useSelector((state) => state.events);
+  const { modalCreate, modalDel, openSelectFaq } = useSelector((state) => state.events);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   const [faq, setFaq] = useState([]);
   const handleCreateFaq = () => {
-    dispatch(FaqCreateModal());
+    dispatch(CreateModalData());
   };
 
   useEffect(() => {
     const body = document.querySelector(".app");
-    if (faqCreate || faqDel || openSelectFaq) {
+    if (modalCreate || modalDel || openSelectFaq) {
       body.classList.add("blur-effect");
     } else {
       body.classList.remove("blur-effect");
@@ -31,16 +30,17 @@ const FAQ = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await ApiServices.getData("faq/all", token);
-        console.log(response);
         setFaq(response);
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false); // Set loading to false after data is received (or if there's an error)
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       }
     };
     fetchData();
-  }, [faqCreate, faqDel, openSelectFaq]);
+  }, [modalCreate, modalDel, openSelectFaq]);
 
   return (
     <div className="faq px-[24px] py-[32px] w-full">
