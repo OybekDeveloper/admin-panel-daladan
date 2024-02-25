@@ -106,7 +106,6 @@ const Category = () => {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <>
                         <table className="min-w-full">
                             <thead>
                                 <tr className="border-t">
@@ -164,13 +163,6 @@ const Category = () => {
                                     ))}
                             </tbody>
                         </table>
-                        <div className="px-[24px] py-[12px]">
-                            <Pagination
-                                pageCount={Math.ceil(category?.length / itemsPerPage)}
-                                onPageChange={handlePageClick}
-                            />
-                        </div>
-                    </>
                 )}
             </section>
             <EditModal />

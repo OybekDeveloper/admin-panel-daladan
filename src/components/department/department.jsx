@@ -124,84 +124,79 @@ const Department = () => {
                 {loading ? (
                     <Loader />
                 ) : (
-                    <>
-                        <table className="min-w-full">
-                            <thead>
-                                <tr className="border-t">
-                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                        Kategoriya nomi
-                                    </th>
-                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                        Nomi(lotincha)
-                                    </th>
-                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                        Nomi(kirilcha)
-                                    </th>
-                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
-                                        Status
-                                    </th>
-                                    <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start"></th>
-                                </tr>
-                            </thead>
-                            <tbody className="w-full whitespace-nowrap overflow-y-auto">
-                                {department
-                                    ?.slice()
-                                    .reverse()
-                                    .map((item, idx) => (
-                                        <tr
-                                            key={idx}
-                                            className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
-                                        >
-                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                                {item?.category?.name}
-                                            </td>
-                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                                {item?.nameL}
-                                            </td>
-                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                                {item?.nameK}
-                                            </td>
-                                            <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                                <label className="inline-flex items-center cursor-pointer">
-                                                    <input
-                                                        type="checkbox"
-                                                        onChange={() =>
-                                                            handleStatusUpdate(item?.id, item?.status)
-                                                        }
-                                                        defaultChecked={item?.status === "ACTIVE"}
-                                                        className="sr-only peer"
-                                                    />
-                                                    <div className="relative w-[36px] h-[20px] bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[16px] after:w-[16px] after:transition-all  peer-checked:bg-[#53B1FD]"></div>
-                                                </label>
-                                            </td>
-                                            <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
-                                                <div className="flex px-[16px] justify-center items-center">
-                                                    <img
-                                                        onClick={() => {
-                                                            handleDepartmentDelete(item?.id);
-                                                        }}
-                                                        className="p-[10px]"
-                                                        src={trash}
-                                                        alt="trash"
-                                                    />
-                                                    <img
-                                                        onClick={() => {
-                                                            handleDepartmentEdit(item?.id);
-                                                        }}
-                                                        className="p-[10px]"
-                                                        src={edit}
-                                                        alt="edit"
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
-                        <div className="px-[24px] py-[12px]">
-                            <Pagination />
-                        </div>
-                    </>
+                    <table className="min-w-full">
+                        <thead>
+                            <tr className="border-t">
+                                <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                    Kategoriya nomi
+                                </th>
+                                <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                    Nomi(lotincha)
+                                </th>
+                                <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                    Nomi(kirilcha)
+                                </th>
+                                <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start">
+                                    Status
+                                </th>
+                                <th className="text-[12px] font-[500] text-[#475467] py-[12px] px-[24px] border-b text-start"></th>
+                            </tr>
+                        </thead>
+                        <tbody className="w-full whitespace-nowrap overflow-y-auto">
+                            {department
+                                ?.slice()
+                                .reverse()
+                                .map((item, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className={`border-t ${idx % 2 === 0 && "bg-[#F9FAFB]"}`}
+                                    >
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            {item?.category?.name}
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            {item?.nameL}
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            {item?.nameK}
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            <label className="inline-flex items-center cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    onChange={() =>
+                                                        handleStatusUpdate(item?.id, item?.status)
+                                                    }
+                                                    defaultChecked={item?.status === "ACTIVE"}
+                                                    className="sr-only peer"
+                                                />
+                                                <div className="relative w-[36px] h-[20px] bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[16px] after:w-[16px] after:transition-all  peer-checked:bg-[#53B1FD]"></div>
+                                            </label>
+                                        </td>
+                                        <td className="hover:bg-[#f9fafb] cursor-pointer  w-[100px] text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
+                                            <div className="flex px-[16px] justify-center items-center">
+                                                <img
+                                                    onClick={() => {
+                                                        handleDepartmentDelete(item?.id);
+                                                    }}
+                                                    className="p-[10px]"
+                                                    src={trash}
+                                                    alt="trash"
+                                                />
+                                                <img
+                                                    onClick={() => {
+                                                        handleDepartmentEdit(item?.id);
+                                                    }}
+                                                    className="p-[10px]"
+                                                    src={edit}
+                                                    alt="edit"
+                                                />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </table>
                 )}
             </section>
             <EditModal />
