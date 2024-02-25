@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import loginback from './Section.png';
-import './login.scss';
+import bg from './bg.svg'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'
+import './login.scss'
 const Login = () => {
     const [formData, setFormData] = useState({
         phone: '',
         password: '',
     });
+    const [admin, setAdmin] = useState('')
     const [errorMessage, setErrorMessage] = useState();
     const navigate = useNavigate()
+    const { pathname } = useLocation();
+
     const handleInputChange = (e) => {
         const rawInput = e.target.value;
         const sanitizedInput = rawInput.replace(/[^0-9+-]/g, ''); // Allow only digits, +, and -
@@ -42,31 +46,92 @@ const Login = () => {
             );
             localStorage.setItem("token", response.data.token);
         } catch (err) {
-            setErrorMessage(err.response.data.errorMessage);
+            setErrorMessage(err.response.data);
         }
-        setFormData({
-            phone: '',
-            password: '',
-        });
+        const token = localStorage.getItem("token")
+        if (token) {
+            const getData = async () => {
+                try {
+                    const token = localStorage.getItem("token")
+                    const response = await axios.get(
+                        "https://avtowatt.uz/api/v1/admin/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    console.log(response);
+                    if (response?.data?.role === "ROLE_MODERATOR") {
+                        setErrorMessage('Admin topilmadi! Iltimos qaytadan kiriting.')
+                        localStorage.removeItem("token")
+                    } else {
+                        setFormData({
+                            phone: '',
+                            password: '',
+                        });
+                    }
+                    setAdmin(response?.data?.role)
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            getData()
+        }
     };
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token')
         if (token) {
             navigate('/')
         }
-    })
+        //eslint-disable-next-line
+    }, [admin, pathname])
     return (
         <section className='login-page flex justify-center items-center w-full'>
             <div className='login w-1/2 flex flex-col justify-center items-center '>
+                <img className='absolute w-[770px] top-[0px] z-[-1]' src={bg} alt="" />
                 <h1 className='w-[360px] text-[30px] font-[600] text-center'>Tizimga kirish</h1>
                 <p className='w-[360px] text-[16px] font-[400] text-[#475467] text-center'>
                     Boshqaruv paneliga kirish uchun telefon raqamingiz va parolni kiriting
                 </p>
                 <form className='w-[360px] flex flex-col gap-[20px] pt-[32px]'>
-                    {errorMessage && <h1 className='bg-red-200 rounded-[12px] p-[10px]'>{errorMessage}</h1>}
+                    {errorMessage?.errorMessage && (
+                        <motion.h1
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                        >
+                            {errorMessage?.errorMessage}
+                        </motion.h1>
+                    )}
+                    {admin === "ROLE_MODERATOR" && (
+                        <motion.h1
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                        >
+                            {errorMessage}
+                        </motion.h1>
+                    )}
 
                     <div className='flex flex-col items-start gap-[6px]'>
-                        <label className='text-[14px] font-[500]' htmlFor='text'>Telefon raqam</label>
+                        <div className='flex justify-start items-center gap-2'>
+                            <label className='text-[14px] font-[500]' htmlFor='text'>Telefon raqam</label>
+                            {errorMessage?.phone && (
+                                <motion.h1
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                                >
+                                    {errorMessage?.phone}
+                                </motion.h1>
+                            )}
+                        </div>
+
                         <input
                             className='w-full flex px-[14px] py-[10px] login-input'
                             type='text'
@@ -77,7 +142,19 @@ const Login = () => {
                         />
                     </div>
                     <div className='flex flex-col gap-[6px]'>
-                        <label className='text-[14px] font-[500]' htmlFor='password'>Parol</label>
+                        <div className='flex items-center justify-start gap-2'>
+                            <label className='text-[14px] font-[500]' htmlFor='password'>Parol</label>
+                            {errorMessage?.password && (
+                                <motion.h1
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="text-[12px] bg-red-200 rounded-[12px] p-[5px]"
+                                >
+                                    {errorMessage?.password}
+                                </motion.h1>
+                            )}
+                        </div>
                         <input
                             className='w-full flex px-[14px] py-[10px] login-input'
                             type='password'

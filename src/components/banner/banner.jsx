@@ -7,6 +7,7 @@ import { CreateModalData, DeleteModalData } from "../../reducer/events";
 import CreateModal from "./create-modal";
 import DeleteModal from "./delete-modal";
 import Loader from "../loader/loader";
+import { ProductImg } from "../img-blurhash/img-product";
 
 const Banner = () => {
     const { modalCreate, modalDel } = useSelector((state) => state.events);
@@ -71,11 +72,8 @@ const Banner = () => {
                                 key={item?.id}
                                 className="banner-card flex flex-col justify-between"
                             >
-                                <img
-                                    className="object-cover h-[200px] rounded-t-[16px]"
-                                    src={item?.imageUrl}
-                                    alt=""
-                                />
+
+                                <ProductImg src={item?.imageUrl}/>
                                 <div className="px-[20px] py-[24px] flex flex-col gap-[24px]">
                                     <h1 className="whitespace-normal overflow-hidden text-[#475467] text-[16px] font-[400]">
                                         {item?.url}

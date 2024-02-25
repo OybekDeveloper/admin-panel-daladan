@@ -8,6 +8,7 @@ import { plus } from "../banner/banner-img";
 import "./contact.scss";
 import DeleteModal from "./delete-modal";
 import CreateModal from "./create-modal";
+import InfoImg from "../img-blurhash/info-img";
 
 const Contact = () => {
     const dispatch = useDispatch();
@@ -92,11 +93,7 @@ const Contact = () => {
                                         </td>
                                         <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                             <div className="flex gap-[12px] justify-start items-center">
-                                                <img
-                                                    className="object-center w-[40px] h-[40px]"
-                                                    src={item?.icon}
-                                                    alt={item?.name}
-                                                />
+                                                <InfoImg src={item?.icon} />
                                             </div>
                                         </td>
                                         <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">

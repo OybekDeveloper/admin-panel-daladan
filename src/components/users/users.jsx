@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DeleteModalData } from "../../reducer/events";
 import DeleteModal from "./delete-modal";
 import Loader from "../loader/loader";
+import InfoImg from '../img-blurhash/info-img'
 const Users = () => {
     const dispatch = useDispatch();
     const { modalDel } = useSelector((state) => state.events);
@@ -76,11 +77,7 @@ const Users = () => {
                                         </td>
                                         <td className="hover:bg-[#f9fafb] cursor-pointer text-[14px] font-[400] text-[#475467] py-[16px] px-[24px]">
                                             <div className="flex gap-[12px] justify-start items-center">
-                                                <img
-                                                    className="object-center rounded-full w-[40px] h-[40px]"
-                                                    src={item?.photoUrl}
-                                                    alt={item?.name}
-                                                />
+                                                <InfoImg src={item?.photoUrl} />
                                                 {item?.name + " " + item?.surname}
                                             </div>
                                         </td>

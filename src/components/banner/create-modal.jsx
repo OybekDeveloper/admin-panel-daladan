@@ -219,7 +219,7 @@ const CreateModal = () => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <section className="w-full flex border-solid border-[1px] border-[#EAECF0] rounded-[12px]">
+                                            <section className=" w-full flex border-solid border-[1px] border-[#EAECF0] rounded-[12px]">
                                                 {loadingPercentage > 0 && (
                                                     <li className="w-full list-none p-[16px] rounded-[12px] flex gap-[12px]">
                                                         <div className="w-[20%]">
